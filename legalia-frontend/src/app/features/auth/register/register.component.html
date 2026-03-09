@@ -1,0 +1,80 @@
+<div class="page">
+
+  <!-- Carte register -->
+  <div class="card">
+
+    <!-- Logo -->
+    <div class="logo">
+      <span class="logo-icon">⚖️</span>
+      <span class="logo-text">LEGALIA</span>
+    </div>
+
+    <h1 class="title">Créer un compte</h1>
+    <p class="subtitle">Rejoignez LEGALIA et analysez vos contrats</p>
+
+    <!-- Formulaire -->
+    <form>
+
+      <!-- Prénom -->
+      <div class="field">
+        <label for="firstname">Prénom</label>
+        <div class="input-wrap">
+          <span class="input-icon">👤</span>
+          <input id="firstname" type="text" placeholder="Votre prénom" />
+        </div>
+      </div>
+
+      <!-- Nom -->
+      <div class="field">
+        <label for="lastname">Nom</label>
+        <div class="input-wrap">
+          <span class="input-icon">👤</span>
+          <input id="lastname" type="text" placeholder="Votre nom" />
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input id="email" type="email" placeholder="votre@email.com" />
+        </div>
+      </div>
+
+      <!-- Mot de passe -->
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input id="password" type="password" placeholder="Minimum 8 caractères" />
+        </div>
+      </div>
+
+      <!-- Confirmer mot de passe -->
+      <div class="field">
+        <label for="confirm">Confirmer le mot de passe</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input id="confirm" type="password" placeholder="••••••••" />
+        </div>
+      </div>
+
+      <!-- Bouton -->
+      <button type="submit" class="btn-register">Créer mon compte</button>
+
+    </form>
+
+    <hr class="divider" />
+
+    <p class="login-link">
+      Déjà un compte ?
+      <a routerLink="/auth/login">Se connecter</a>
+    </p>
+
+  </div>
+
+  <!-- Retour accueil -->
+  <a routerLink="/" class="back-link">← Retour à l'accueil</a>
+
+</div>

@@ -1,0 +1,47 @@
+<div class="page">
+
+  <div class="card">
+
+    <div class="logo">
+      <span class="logo-icon">⚖️</span>
+      <span class="logo-text">LEGALIA</span>
+    </div>
+
+    <h1 class="title">Bienvenue</h1>
+    <p class="subtitle">Connectez-vous à votre espace LEGALIA</p>
+
+    <form>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input id="email" type="email" placeholder="votre@email.com" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input id="password" type="password" placeholder="••••••••" />
+        </div>
+        <a routerLink="/auth/forgot-password" class="forgot">Mot de passe oublié ?</a>
+      </div>
+
+      <button type="submit" class="btn-connect">Se connecter</button>
+
+    </form>
+
+    <hr class="divider" />
+
+    <p class="register-link">
+      Pas encore de compte ?
+      <a routerLink="/auth/register">Demander un accès</a>
+    </p>
+
+  </div>
+
+  <a routerLink="/" class="back-link">← Retour à l'accueil</a>
+
+</div>
