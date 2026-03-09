@@ -24,6 +24,12 @@ public class Utilisateur {
     private String email;
 
     @Column(nullable = false)
+    private String prenom;
+
+    @Column(nullable = false)
+    private String nom;
+
+    @Column(nullable = false)
     private String motDePasseHash;
 
     @Column(nullable = false)

@@ -19,6 +19,8 @@ public class UserResponse {
 
     private UUID id;
     private String email;
+    private String prenom;
+    private String nom;
     private LocalDateTime dateInscription;
     private String statutAbonnement;
     private String typeOffre;

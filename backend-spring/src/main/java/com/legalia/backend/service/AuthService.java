@@ -58,6 +58,8 @@ public class AuthService implements UserDetailsService {
 
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setEmail(request.getEmail());
+        utilisateur.setPrenom(request.getPrenom());
+        utilisateur.setNom(request.getNom());
         utilisateur.setMotDePasseHash(passwordEncoder.encode(request.getPassword()));
         utilisateur.setDateInscription(LocalDateTime.now());
         // Les valeurs par défaut (ACTIF, MENSUEL_STD, CLIENT) sont définies dans le modèle
@@ -99,6 +101,8 @@ public class AuthService implements UserDetailsService {
         return UserResponse.builder()
                 .id(u.getIdUtilisateur())
                 .email(u.getEmail())
+                .prenom(u.getPrenom())
+                .nom(u.getNom())
                 .dateInscription(u.getDateInscription())
                 .statutAbonnement(u.getStatutAbonnement().name())
                 .typeOffre(u.getTypeOffre().name())
