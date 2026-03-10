@@ -112,6 +112,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<!-- IPv6 requis pour la connexion à Supabase -->
+					<jvmArguments>-Djava.net.preferIPv6Addresses=true</jvmArguments>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
