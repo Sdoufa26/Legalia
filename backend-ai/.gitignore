@@ -1,0 +1,23 @@
+# Variables d'environnement — ne jamais commiter
+.env
+
+# Environnement virtuel Python
+venv/
+.venv/
+env/
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Modèles téléchargés (sentence-transformers cache)
+.cache/
+*.bin
+*.pt
+
+# Logs
+*.log
+
+# macOS
+.DS_Store

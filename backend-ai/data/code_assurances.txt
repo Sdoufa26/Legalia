@@ -1,0 +1,47 @@
+CODE DES ASSURANCES - EXTRAITS PERTINENTS
+Dernière mise à jour : Version de référence pour tests RAG Legalia
+=========================================================================
+
+Article L112-4 - Présentation et lisibilité du contrat
+-----------------------------------------------------------------------
+Les clauses des polices édictant des nullités, des déchéances ou des exclusions ne sont valables que si elles sont mentionnées en caractères très apparents. L'assureur doit remettre à l'assuré une notice d'information décrivant les garanties, leurs conditions d'application ainsi que les exclusions. Cette obligation de lisibilité vise à protéger l'assuré contre les clauses surprenantes dissimulées dans les contrats.
+
+Article L113-1 - Exclusions de garantie et déclarations de risque
+-----------------------------------------------------------------------
+Les pertes et les dommages occasionnés par des cas fortuits ou causés par la faute de l'assuré sont à la charge de l'assureur, sauf exclusion formelle et limitée contenue dans la police. Toutefois, l'assureur ne répond pas des pertes et dommages provenant d'une faute intentionnelle ou dolosive de l'assuré. Les exclusions de garantie doivent être formelles et limitées : elles ne peuvent être larges ou imprécises, et doivent être rédigées clairement pour être opposables à l'assuré.
+
+Article L113-2 - Obligations de déclaration de l'assuré
+-----------------------------------------------------------------------
+L'assuré est obligé :
+1° De répondre exactement aux questions posées par l'assureur, notamment dans le formulaire de déclaration du risque par lequel l'assureur l'interroge lors de la conclusion du contrat, sur les circonstances qui sont de nature à faire apprécier par l'assureur les risques qu'il prend en charge.
+2° De déclarer, en cours de contrat, les circonstances nouvelles qui ont pour conséquence soit d'aggraver les risques, soit d'en créer de nouveaux et rendent de ce fait inexactes ou caduques les réponses faites à l'assureur lors de la conclusion du contrat.
+L'assuré doit, par lettre recommandée, déclarer ces circonstances à l'assureur dans un délai de quinze jours à partir du moment où il en a eu connaissance.
+3° De donner avis à l'assureur, dès qu'il en a eu connaissance et au plus tard dans le délai fixé par le contrat, de tout sinistre de nature à entraîner la garantie de l'assureur. Ce délai ne peut être inférieur à cinq jours ouvrés pour les sinistres autres que ceux relevant des branches mentionnées à l'article L. 111-6.
+
+Article L113-8 - Nullité pour fausse déclaration intentionnelle
+-----------------------------------------------------------------------
+Indépendamment des causes ordinaires de nullité, et sous réserve des dispositions de l'article L. 132-26, le contrat d'assurance est nul en cas de réticence ou de fausse déclaration intentionnelle de la part de l'assuré, quand cette réticence ou cette fausse déclaration change l'objet du risque ou en diminue l'opinion pour l'assureur, alors même que le risque omis ou dénaturé par l'assuré a été sans influence sur le sinistre. Les primes payées demeurent alors acquises à l'assureur, qui a droit au paiement de toutes les primes échues à titre de dommages et intérêts. Cette nullité peut être invoquée même après un sinistre.
+
+Article L113-9 - Omission ou déclaration inexacte non intentionnelle
+-----------------------------------------------------------------------
+L'omission ou la déclaration inexacte de la part de l'assuré dont la mauvaise foi n'est pas établie n'entraîne pas la nullité de l'assurance. Si elle est constatée avant tout sinistre, l'assureur a le droit soit de maintenir le contrat, moyennant une augmentation de prime acceptée par l'assuré, soit de résilier le contrat dix jours après notification adressée à l'assuré par lettre recommandée. En cas de sinistre, l'omission ou la déclaration inexacte de bonne foi de l'assuré entraîne une réduction de l'indemnité en proportion du taux des primes payées par rapport au taux des primes qui auraient été dues si les risques avaient été complètement et exactement déclarés.
+
+Article L121-1 - Principe indemnitaire
+-----------------------------------------------------------------------
+L'assurance relative aux biens est un contrat d'indemnité ; l'indemnité due par l'assureur à l'assuré ne peut pas dépasser le montant de la valeur de la chose assurée au moment du sinistre. Il peut être stipulé que l'assuré reste obligatoirement son propre assureur pour une somme ou une quotité déterminée, ou qu'il supporte une déduction fixe. Le principe indemnitaire interdit l'enrichissement de l'assuré : celui-ci ne peut pas percevoir plus que la valeur réelle du bien endommagé ou détruit. L'assurance ne doit pas être une source de profit pour l'assuré.
+
+Article L113-3 - Résiliation pour non-paiement de prime
+-----------------------------------------------------------------------
+À défaut de paiement d'une prime, ou d'une fraction de prime, dans les dix jours de son échéance, et indépendamment du droit pour l'assureur de poursuivre l'exécution du contrat en justice, la garantie ne peut être suspendue que trente jours après la mise en demeure de l'assuré. Au cas où la prime annuelle a été fractionnée, la suspension de la garantie, intervenue en cas de non-paiement d'une des fractions de prime, produit ses effets jusqu'à l'expiration de la période annuelle considérée. L'assureur a le droit de résilier le contrat dix jours après l'expiration du délai de trente jours.
+
+Article L113-12 - Droit de résiliation annuelle
+-----------------------------------------------------------------------
+L'assuré a le droit de résilier le contrat à l'expiration d'un délai d'un an, en envoyant une lettre recommandée à l'assureur au moins deux mois avant la date d'échéance. Ce droit appartient dans les mêmes conditions à l'assureur. Le droit de résiliation annuelle constitue une protection fondamentale de l'assuré qui lui permet de ne pas être piégé indéfiniment dans un contrat qui ne lui convient plus ou dont les tarifs ont augmenté.
+
+Article L122-1 - Exclusions générales
+-----------------------------------------------------------------------
+Sont exclues des contrats d'assurance de dommages les garanties relatives à des dommages causés intentionnellement par l'assuré. Cette exclusion est d'ordre public : aucune clause contractuelle ne peut y déroger. L'assurance ne peut pas couvrir les actes délibérément commis par l'assuré dans l'intention de provoquer le sinistre.
+
+=========================================================================
+FIN DES EXTRAITS — Code des Assurances (version Legalia test)
+=========================================================================
