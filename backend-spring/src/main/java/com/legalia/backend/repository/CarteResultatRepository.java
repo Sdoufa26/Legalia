@@ -11,6 +11,9 @@ import java.util.UUID;
 @Repository
 public interface CarteResultatRepository extends JpaRepository<CarteResultat, UUID> {
 
-    // Toutes les cartes d'analyse liées à un document
+    // Toutes les cartes d'analyse liées à un document (par entité)
     List<CarteResultat> findByDocument(Document document);
+
+    // Toutes les cartes d'analyse liées à un document (par identifiant)
+    List<CarteResultat> findByDocument_Id(UUID documentId);
 }
