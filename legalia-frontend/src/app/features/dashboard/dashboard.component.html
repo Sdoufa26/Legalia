@@ -1,0 +1,160 @@
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚖️</span>
+      <span class="logo-text">LEGALIA</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-item">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </span>
+        Dashboard
+      </a>
+      <a routerLink="/documents" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </span>
+        Documents
+      </a>
+      <a routerLink="/notifications" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </span>
+        Notifications
+      </a>
+      <a routerLink="/analysis" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </span>
+        Analysis
+      </a>
+    </nav>
+
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>Dashboard</h1>
+        <p>Overview of your document analysis</p>
+      </div>
+
+      <div class="topbar-right">
+        <button class="btn-upload">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Upload a document
+        </button>
+
+        <!-- USER AVATAR -->
+        <div class="user-menu-wrapper">
+          <button class="user-avatar" (click)="toggleUserMenu()" [attr.aria-expanded]="userMenuOpen">
+            <span *ngIf="!loading">{{ initials }}</span>
+            <span *ngIf="loading">…</span>
+          </button>
+
+          <div class="user-dropdown" *ngIf="userMenuOpen">
+            <div class="user-info">
+              <strong>{{ fullName }}</strong>
+              <span>{{ user?.email }}</span>
+              <span class="badge-role">{{ user?.role }}</span>
+            </div>
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item" (click)="logout()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Se déconnecter
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- STATS CARDS -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Analysis Progress</span>
+            <span class="stat-icon progress">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </span>
+          </div>
+          <div class="stat-value">{{ stats.progress }}%</div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="stats.progress"></div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Documents Analyzed</span>
+            <span class="stat-icon validated">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </span>
+          </div>
+          <div class="stat-value">{{ stats.analyzed }}</div>
+          <div class="stat-sub">out of {{ stats.total }} total</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Pending Analysis</span>
+            <span class="stat-icon pending">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+          </div>
+          <div class="stat-value">{{ stats.pending }}</div>
+          <div class="stat-sub">awaiting review</div>
+        </div>
+
+      </div>
+
+      <!-- DOCUMENTS TABLE -->
+      <div class="table-card">
+        <h2 class="table-title">Recent Documents</h2>
+        <table class="doc-table">
+          <thead>
+          <tr>
+            <th>DOCUMENT NAME</th>
+            <th>DATE</th>
+            <th>STATUS</th>
+            <th>ACTIONS</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let doc of documents">
+            <td class="doc-name">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              {{ doc.name }}
+            </td>
+            <td class="doc-date">{{ doc.date }}</td>
+            <td>
+                <span class="status-badge" [ngClass]="getStatusClass(doc.status)">
+                  <svg *ngIf="doc.status === 'Validated'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <svg *ngIf="doc.status === 'Pending'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <svg *ngIf="doc.status === 'Error'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  {{ doc.status }}
+                </span>
+            </td>
+            <td>
+              <button [ngClass]="getActionClass(doc.status)">{{ getActionLabel(doc.status) }}</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+</div>

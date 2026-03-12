@@ -1,5 +1,6 @@
 package com.legalia.backend.controller;
 
+import com.legalia.backend.config.JwtUtil;
 import com.legalia.backend.dto.LoginRequest;
 import com.legalia.backend.dto.RegisterRequest;
 import com.legalia.backend.dto.TokenResponse;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
     /**
      * POST /api/auth/register
@@ -61,8 +63,14 @@ public class AuthController {
      * L'email est extrait depuis le SecurityContext (lui-même alimenté par JwtAuthFilter).
      */
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getProfile(Authentication authentication) {
-        UserResponse response = authService.getProfile(authentication.getName());
+    public ResponseEntity<UserResponse> getProfile(
+            @RequestHeader("Authorization") String authHeader) {
+
+        // Extrait l'email directement depuis le token
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtUtil.extractEmail(token);
+
+        UserResponse response = authService.getProfile(email);
         return ResponseEntity.ok(response);
     }
 }

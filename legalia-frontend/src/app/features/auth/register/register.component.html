@@ -13,14 +13,15 @@
     <p class="subtitle">Rejoignez LEGALIA et analysez vos contrats</p>
 
     <!-- Formulaire -->
-    <form>
+    <form (ngSubmit)="onSubmit()">
 
       <!-- Prénom -->
       <div class="field">
         <label for="firstname">Prénom</label>
         <div class="input-wrap">
           <span class="input-icon">👤</span>
-          <input id="firstname" type="text" placeholder="Votre prénom" />
+          <input id="firstname" type="text" placeholder="Votre prénom"
+            [(ngModel)]="prenom" name="prenom" [disabled]="loading"/>
         </div>
       </div>
 
@@ -29,7 +30,8 @@
         <label for="lastname">Nom</label>
         <div class="input-wrap">
           <span class="input-icon">👤</span>
-          <input id="lastname" type="text" placeholder="Votre nom" />
+          <input id="lastname" type="text" placeholder="Votre nom"
+            [(ngModel)]="nom" name="nom" [disabled]="loading"/>
         </div>
       </div>
 
@@ -38,7 +40,8 @@
         <label for="email">Email</label>
         <div class="input-wrap">
           <span class="input-icon">✉</span>
-          <input id="email" type="email" placeholder="votre@email.com" />
+          <input id="email" type="email" placeholder="votre@email.com"
+            [(ngModel)]="email" name="email" [disabled]="loading"/>
         </div>
       </div>
 
@@ -47,7 +50,8 @@
         <label for="password">Mot de passe</label>
         <div class="input-wrap">
           <span class="input-icon">🔒</span>
-          <input id="password" type="password" placeholder="Minimum 8 caractères" />
+          <input id="password" type="password" placeholder="Minimum 8 caractères"
+            [(ngModel)]="password" name="password" [disabled]="loading"/>
         </div>
       </div>
 
@@ -56,12 +60,16 @@
         <label for="confirm">Confirmer le mot de passe</label>
         <div class="input-wrap">
           <span class="input-icon">🔒</span>
-          <input id="confirm" type="password" placeholder="••••••••" />
+          <input id="confirm" type="password" placeholder="••••••••"
+            [(ngModel)]="confirm" name="confirm" [disabled]="loading"/>
         </div>
       </div>
 
       <!-- Bouton -->
-      <button type="submit" class="btn-register">Créer mon compte</button>
+      <button type="submit" class="btn-register" [disabled]="loading">
+        <span *ngIf="!loading">Créer mon compte</span>
+        <span *ngIf="loading">Création...</span>
+      </button>
 
     </form>
 

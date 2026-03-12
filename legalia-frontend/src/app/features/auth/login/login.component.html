@@ -10,13 +10,26 @@
     <h1 class="title">Bienvenue</h1>
     <p class="subtitle">Connectez-vous à votre espace LEGALIA</p>
 
-    <form>
+    <!-- Message d'erreur -->
+    <div class="error-banner" *ngIf="errorMessage">
+      ⚠️ {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
 
       <div class="field">
         <label for="email">Email</label>
         <div class="input-wrap">
           <span class="input-icon">✉</span>
-          <input id="email" type="email" placeholder="votre@email.com" />
+          <input
+            id="email"
+            type="email"
+            placeholder="votre@email.com"
+            [(ngModel)]="email"
+            name="email"
+            autocomplete="email"
+            [disabled]="loading"
+          />
         </div>
       </div>
 
@@ -24,12 +37,23 @@
         <label for="password">Mot de passe</label>
         <div class="input-wrap">
           <span class="input-icon">🔒</span>
-          <input id="password" type="password" placeholder="••••••••" />
+          <input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            [(ngModel)]="password"
+            name="password"
+            autocomplete="current-password"
+            [disabled]="loading"
+          />
         </div>
         <a routerLink="/auth/forgot-password" class="forgot">Mot de passe oublié ?</a>
       </div>
 
-      <button type="submit" class="btn-connect">Se connecter</button>
+      <button type="submit" class="btn-connect" [disabled]="loading">
+        <span *ngIf="!loading">Se connecter</span>
+        <span *ngIf="loading" class="spinner">Connexion...</span>
+      </button>
 
     </form>
 
