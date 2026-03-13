@@ -43,3 +43,6 @@ Thumbs.db
 
 # Secrets
 src/main/resources/application.properties
+
+# Token
+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

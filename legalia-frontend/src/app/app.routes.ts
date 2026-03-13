@@ -51,7 +51,12 @@ export const routes: Routes = [
       import('./features/analysis/analysis.component').then(m => m.AnalysisComponent),
     canActivate: [authGuard]
   },
-
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./features/profile/profile.component').then(m => m.ProfileComponent),
+    canActivate: [authGuard]
+  },
   // ── Redirection par défaut ──
   {
     path: '**',
