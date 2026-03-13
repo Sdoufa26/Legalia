@@ -19,7 +19,7 @@ public class RestClientConfig {
     public RestTemplate restTemplate() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(10_000);   // 10s pour établir la connexion
-        factory.setReadTimeout(120_000);     // 120s pour recevoir la réponse complète
+        factory.setReadTimeout(300_000);     // 300s pour recevoir la réponse complète
         return new RestTemplate(factory);
     }
 }
