@@ -61,4 +61,9 @@ export class DocumentService {
   getDocumentResults(id: string): Observable<CarteResultatResponse[]> {
     return this.http.get<CarteResultatResponse[]>(`${this.API}/${id}/results`);
   }
+
+  /** Supprime un document par son ID */
+  deleteDocument(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.API}/${id}`);
+  }
 }

@@ -29,6 +29,11 @@ export class DashboardComponent implements OnInit {
   // Documents chargés depuis l'API
   documents: DocumentResponse[] = [];
 
+  // Modale de confirmation de suppression
+  showDeleteModal = false;
+  documentToDelete: DocumentResponse | null = null;
+  deleting = false;
+
   constructor(
     private authService: AuthService,
     private documentService: DocumentService,
@@ -156,5 +161,35 @@ export class DashboardComponent implements OnInit {
     } catch {
       return dateStr;
     }
+  }
+
+  /** Ouvre la modale de confirmation */
+  openDeleteModal(event: Event, doc: DocumentResponse): void {
+    event.stopPropagation();
+    this.documentToDelete = doc;
+    this.showDeleteModal = true;
+  }
+
+  /** Ferme la modale */
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.documentToDelete = null;
+    this.deleting = false;
+  }
+
+  /** Confirme la suppression */
+  confirmDelete(): void {
+    if (!this.documentToDelete) return;
+    this.deleting = true;
+    this.documentService.deleteDocument(this.documentToDelete.id).subscribe({
+      next: () => {
+        this.documents = this.documents.filter(d => d.id !== this.documentToDelete!.id);
+        this.computeStats();
+        this.closeDeleteModal();
+      },
+      error: () => {
+        this.deleting = false;
+      }
+    });
   }
 }

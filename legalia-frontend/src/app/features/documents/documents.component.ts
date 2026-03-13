@@ -15,6 +15,11 @@ export class DocumentsComponent implements OnInit {
   documents: DocumentResponse[] = [];
   loading = true;
 
+  // Modale de confirmation de suppression
+  showDeleteModal = false;
+  documentToDelete: DocumentResponse | null = null;
+  deleting = false;
+
   constructor(
     private documentService: DocumentService,
     private router: Router
@@ -92,5 +97,34 @@ export class DocumentsComponent implements OnInit {
   formatSize(sizeKb: number): string {
     if (sizeKb < 1024) return `${sizeKb} Ko`;
     return `${(sizeKb / 1024).toFixed(1)} Mo`;
+  }
+
+  /** Ouvre la modale de confirmation */
+  openDeleteModal(event: Event, doc: DocumentResponse): void {
+    event.stopPropagation();
+    this.documentToDelete = doc;
+    this.showDeleteModal = true;
+  }
+
+  /** Ferme la modale */
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.documentToDelete = null;
+    this.deleting = false;
+  }
+
+  /** Confirme la suppression */
+  confirmDelete(): void {
+    if (!this.documentToDelete) return;
+    this.deleting = true;
+    this.documentService.deleteDocument(this.documentToDelete.id).subscribe({
+      next: () => {
+        this.documents = this.documents.filter(d => d.id !== this.documentToDelete!.id);
+        this.closeDeleteModal();
+      },
+      error: () => {
+        this.deleting = false;
+      }
+    });
   }
 }

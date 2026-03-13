@@ -280,6 +280,130 @@
 .btn-action.secondary { background: #f0f2f5; color: #1a2e5a; border: 1px solid #dde3ef; }
 .btn-action.danger { background: #fff0f0; color: #c62828; border: 1px solid #ffcdd2; }
 
+/* ── ACTIONS CELL ── */
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-delete {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #999;
+  transition: all 0.15s;
+}
+.btn-delete:hover {
+  background: #fff0f0;
+  border-color: #ffcdd2;
+  color: #c62828;
+}
+
+/* ── MODALE DE SUPPRESSION ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffebee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.modal-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a2e5a;
+  margin-bottom: 8px;
+}
+
+.modal-text {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-cancel {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #dde3ef;
+  background: #f9fafb;
+  color: #444;
+  transition: all 0.15s;
+}
+.btn-cancel:hover {
+  background: #f0f2f5;
+}
+
+.btn-confirm-delete {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: #c62828;
+  color: #fff;
+  transition: all 0.15s;
+}
+.btn-confirm-delete:hover {
+  background: #b71c1c;
+}
+.btn-confirm-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .layout { flex-direction: column; }

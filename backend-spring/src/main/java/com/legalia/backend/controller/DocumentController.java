@@ -136,6 +136,26 @@ public class DocumentController {
         }
     }
 
+    /**
+     * DELETE /api/documents/{id}
+     * Supprime un document et ses résultats d'analyse.
+     * Retourne 204 si succès, 403 si accès refusé, 404 si introuvable.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteDocument(@PathVariable UUID id,
+                                            Authentication authentication) {
+        try {
+            documentService.deleteDocument(id, authentication.getName());
+            return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("erreur", "Document introuvable"));
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("erreur", "Accès refusé à ce document"));
+        }
+    }
+
     // --- Conversions entité → DTO ---
 
     private DocumentUploadResponse toUploadResponse(Document doc, List<CarteResultatResponse> clauses) {

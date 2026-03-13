@@ -104,12 +104,14 @@ export class UploadComponent {
     this.errorMessage = '';
     this.uploadProgress = 0;
 
-    // Simule une progression pendant l'upload + analyse
+    // Simule une progression pendant l'upload + analyse (ne dépasse jamais 99%)
     const progressInterval = setInterval(() => {
-      if (this.uploadProgress < 90) {
-        this.uploadProgress += Math.random() * 15;
+      const remaining = 99 - this.uploadProgress;
+      if (remaining > 1) {
+        this.uploadProgress += remaining * 0.08;
+        this.uploadProgress = Math.min(this.uploadProgress, 99);
       }
-    }, 500);
+    }, 400);
 
     this.documentService.uploadDocument(this.selectedFile).subscribe({
       next: (response: DocumentUploadResponse) => {

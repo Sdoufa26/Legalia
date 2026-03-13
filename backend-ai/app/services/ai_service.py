@@ -102,7 +102,7 @@ def analyze_clause(
     logger.debug(f"Envoi de la clause '{clause_titre}' à Gemini")
 
     # Retry avec backoff exponentiel en cas de rate limit (429)
-    delais_retry = [5, 15, 30]
+    delais_retry = [3, 8, 15]
     for tentative, delai in enumerate(delais_retry + [None], start=1):
         try:
             reponse = client.models.generate_content(
@@ -180,9 +180,9 @@ def analyze_contract(clauses: list[dict]) -> list[dict]:
         resultat = analyze_clause(titre, contenu, articles_pertinents)
         resultats.append(resultat)
 
-        # Pause entre les appels pour respecter le rate limit Gemini (tier gratuit ~15 req/min)
+        # Pause entre les appels pour respecter le rate limit Gemini
         if i < total:
-            time.sleep(4)
+            time.sleep(2)
 
     logger.info(f"Analyse complète : {len(resultats)}/{total} clauses traitées")
     return resultats

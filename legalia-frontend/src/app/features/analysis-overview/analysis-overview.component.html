@@ -1,0 +1,234 @@
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚖️</span>
+      <span class="logo-text">LEGALIA</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-item">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </span>
+        Dashboard
+      </a>
+      <a routerLink="/documents" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </span>
+        Documents
+      </a>
+      <a routerLink="/upload" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </span>
+        Upload
+      </a>
+      <a routerLink="/analysis" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </span>
+        Analysis
+      </a>
+    </nav>
+
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>Analyses</h1>
+        <p>Vue d'ensemble de toutes vos analyses IA</p>
+      </div>
+
+      <div class="topbar-right">
+        <button class="btn-upload" routerLink="/upload">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Analyser un document
+        </button>
+
+        <!-- USER AVATAR -->
+        <div class="user-menu-wrapper">
+          <button class="user-avatar" (click)="toggleUserMenu()" [attr.aria-expanded]="userMenuOpen">
+            <span *ngIf="!loading">{{ initials }}</span>
+            <span *ngIf="loading">…</span>
+          </button>
+          <div class="user-dropdown" *ngIf="userMenuOpen">
+            <div class="user-info">
+              <strong>{{ fullName }}</strong>
+              <span>{{ user?.email }}</span>
+              <span class="badge-role">{{ user?.role }}</span>
+            </div>
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item" routerLink="/profile">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Mon profil
+            </button>
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item" (click)="logout()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Se déconnecter
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- Chargement -->
+      <div *ngIf="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Chargement des analyses…</p>
+      </div>
+
+      <ng-container *ngIf="!loading">
+
+        <!-- État vide -->
+        <div *ngIf="analyzedDocs.length === 0" class="empty-state-full">
+          <div class="empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <h3>Aucune analyse disponible</h3>
+          <p>Uploadez un document PDF pour lancer votre première analyse IA.</p>
+          <a routerLink="/upload" class="btn-cta">Analyser un document</a>
+        </div>
+
+        <!-- Contenu principal (si des analyses existent) -->
+        <ng-container *ngIf="analyzedDocs.length > 0">
+
+          <!-- STATS GLOBALES -->
+          <div class="stats-grid">
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Documents analysés</span>
+                <span class="stat-icon docs">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+              </div>
+              <div class="stat-value">{{ globalStats.totalDocuments }}</div>
+              <div class="stat-sub">{{ globalStats.totalClauses }} clauses au total</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Alertes élevées</span>
+                <span class="stat-icon alert">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </span>
+              </div>
+              <div class="stat-value stat-alert">{{ globalStats.totalEleve }}</div>
+              <div class="stat-sub">{{ getPercentage(globalStats.totalEleve) }}% des clauses</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Vigilance moyenne</span>
+                <span class="stat-icon warning">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </span>
+              </div>
+              <div class="stat-value stat-warning">{{ globalStats.totalMoyen }}</div>
+              <div class="stat-sub">{{ getPercentage(globalStats.totalMoyen) }}% des clauses</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Clauses conformes</span>
+                <span class="stat-icon safe">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </span>
+              </div>
+              <div class="stat-value stat-safe">{{ globalStats.totalFaible }}</div>
+              <div class="stat-sub">{{ getPercentage(globalStats.totalFaible) }}% des clauses</div>
+            </div>
+
+          </div>
+
+          <!-- BARRE DE RÉPARTITION GLOBALE -->
+          <div class="distribution-bar-card">
+            <h3 class="section-title">Répartition globale de la vigilance</h3>
+            <div class="distribution-bar" *ngIf="globalStats.totalClauses > 0">
+              <div class="bar-segment bar-eleve"
+                   [style.width.%]="getPercentage(globalStats.totalEleve)"
+                   *ngIf="globalStats.totalEleve > 0">
+              </div>
+              <div class="bar-segment bar-moyen"
+                   [style.width.%]="getPercentage(globalStats.totalMoyen)"
+                   *ngIf="globalStats.totalMoyen > 0">
+              </div>
+              <div class="bar-segment bar-faible"
+                   [style.width.%]="getPercentage(globalStats.totalFaible)"
+                   *ngIf="globalStats.totalFaible > 0">
+              </div>
+            </div>
+            <div class="distribution-legend">
+              <span class="legend-item"><span class="legend-dot dot-eleve"></span> Élevé ({{ globalStats.totalEleve }})</span>
+              <span class="legend-item"><span class="legend-dot dot-moyen"></span> Moyen ({{ globalStats.totalMoyen }})</span>
+              <span class="legend-item"><span class="legend-dot dot-faible"></span> Faible ({{ globalStats.totalFaible }})</span>
+            </div>
+          </div>
+
+          <!-- LISTE DES DOCUMENTS ANALYSÉS -->
+          <div class="docs-section">
+            <h3 class="section-title">Documents analysés</h3>
+
+            <div class="doc-cards-grid">
+              <div class="doc-analysis-card" *ngFor="let item of analyzedDocs" (click)="viewAnalysis(item.document.id)">
+
+                <!-- En-tête de la carte -->
+                <div class="dac-header">
+                  <div class="dac-file-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                  </div>
+                  <div class="dac-info">
+                    <h4>{{ item.document.nomFichier }}</h4>
+                    <span class="dac-date">{{ formatDate(item.document.dateTeleversement) }}</span>
+                  </div>
+                  <span class="dac-clauses-count">{{ item.nbClauses }} clauses</span>
+                </div>
+
+                <!-- Barre de répartition par document -->
+                <div class="dac-bar">
+                  <div class="bar-segment bar-eleve" [style.width.%]="item.nbClauses > 0 ? (item.nbEleve / item.nbClauses * 100) : 0" *ngIf="item.nbEleve > 0"></div>
+                  <div class="bar-segment bar-moyen" [style.width.%]="item.nbClauses > 0 ? (item.nbMoyen / item.nbClauses * 100) : 0" *ngIf="item.nbMoyen > 0"></div>
+                  <div class="bar-segment bar-faible" [style.width.%]="item.nbClauses > 0 ? (item.nbFaible / item.nbClauses * 100) : 0" *ngIf="item.nbFaible > 0"></div>
+                </div>
+
+                <!-- Badges de répartition -->
+                <div class="dac-badges">
+                  <span class="mini-badge badge-eleve" *ngIf="item.nbEleve > 0">{{ item.nbEleve }} élevé{{ item.nbEleve > 1 ? 's' : '' }}</span>
+                  <span class="mini-badge badge-moyen" *ngIf="item.nbMoyen > 0">{{ item.nbMoyen }} moyen{{ item.nbMoyen > 1 ? 's' : '' }}</span>
+                  <span class="mini-badge badge-faible" *ngIf="item.nbFaible > 0">{{ item.nbFaible }} faible{{ item.nbFaible > 1 ? 's' : '' }}</span>
+                </div>
+
+                <!-- Bouton -->
+                <div class="dac-footer">
+                  <span class="dac-link">Voir le détail
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+      </ng-container>
+
+    </div>
+  </main>
+
+</div>

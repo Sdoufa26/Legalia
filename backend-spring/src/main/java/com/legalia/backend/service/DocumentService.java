@@ -2,6 +2,7 @@ package com.legalia.backend.service;
 
 import com.legalia.backend.model.Document;
 import com.legalia.backend.model.Utilisateur;
+import com.legalia.backend.repository.CarteResultatRepository;
 import com.legalia.backend.repository.DocumentRepository;
 import com.legalia.backend.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,6 +39,7 @@ public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final CarteResultatRepository carteResultatRepository;
 
     /**
      * Upload d'un document PDF.
@@ -118,5 +122,35 @@ public class DocumentService {
         }
 
         return document;
+    }
+
+    /**
+     * Supprime un document et ses résultats d'analyse.
+     * Vérifie que le document appartient à l'utilisateur connecté.
+     * Supprime aussi le fichier physique sur disque.
+     *
+     * @param documentId l'identifiant du document à supprimer
+     * @param email      l'email de l'utilisateur connecté
+     */
+    @Transactional
+    public void deleteDocument(UUID documentId, String email) {
+        // Vérifie la propriété (lève 403 ou 404 si nécessaire)
+        Document document = getDocumentById(documentId, email);
+
+        // Supprime d'abord les cartes de résultat liées
+        carteResultatRepository.deleteAll(carteResultatRepository.findByDocument(document));
+
+        // Supprime l'entrée en base
+        documentRepository.delete(document);
+
+        // Supprime le fichier physique (best effort)
+        try {
+            Path dir = Paths.get(uploadDir);
+            Files.list(dir)
+                    .filter(p -> p.getFileName().toString().contains(documentId.toString()))
+                    .forEach(p -> {
+                        try { Files.deleteIfExists(p); } catch (IOException ignored) {}
+                    });
+        } catch (IOException ignored) {}
     }
 }
