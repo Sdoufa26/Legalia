@@ -1,0 +1,67 @@
+<div class="page">
+
+  <!-- ── EN-TÊTE ── -->
+  <header class="page-header">
+    <button class="btn-back" routerLink="/dashboard">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <div>
+      <h1>Contract Analysis</h1>
+      <p *ngIf="document">{{ document.nomFichier }}</p>
+    </div>
+  </header>
+
+  <!-- Chargement -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Chargement des résultats…</p>
+  </div>
+
+  <!-- Erreur -->
+  <div *ngIf="!loading && errorMessage" class="error-state">
+    <p>{{ errorMessage }}</p>
+    <button class="btn-back-text" routerLink="/dashboard">Retour au dashboard</button>
+  </div>
+
+  <!-- Split-screen : document + résultats -->
+  <div *ngIf="!loading && !errorMessage && clauses.length > 0" class="split">
+
+    <!-- GAUCHE : Document contractuel complet -->
+    <div class="panel panel-document">
+      <div class="panel-title">Contract Document</div>
+      <div class="panel-body">
+        <div *ngFor="let clause of clauses" class="original-block">
+          <h4>{{ clause.titreClause }}</h4>
+          <p>{{ clause.texteOriginal }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DROITE : Cartes de résultats IA -->
+    <div class="panel panel-results">
+      <div class="panel-title">AI Analysis Results</div>
+      <div class="panel-body">
+        <div
+          *ngFor="let clause of clauses"
+          class="result-card"
+          [ngClass]="getCardClass(clause.niveauVigilance)"
+        >
+          <span class="card-badge" [ngClass]="getBadgeClass(clause.niveauVigilance)">
+            {{ getBadgeLabel(clause.niveauVigilance) }}
+          </span>
+          <h4 class="card-title">{{ clause.titreClause }}</h4>
+          <p class="card-text">{{ clause.texteClair }}</p>
+          <div *ngIf="clause.sourceJuridique" class="card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            {{ clause.sourceJuridique }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

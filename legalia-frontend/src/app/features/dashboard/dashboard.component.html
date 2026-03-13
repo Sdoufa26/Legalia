@@ -21,11 +21,11 @@
         </span>
         Documents
       </a>
-      <a routerLink="/notifications" routerLinkActive="active" class="nav-item">
+      <a routerLink="/upload" routerLinkActive="active" class="nav-item">
         <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </span>
-        Notifications
+        Upload
       </a>
       <a routerLink="/analysis" routerLinkActive="active" class="nav-item">
         <span class="nav-icon">
@@ -44,13 +44,13 @@
     <header class="topbar">
       <div class="topbar-title">
         <h1>Dashboard</h1>
-        <p>Overview of your document analysis</p>
+        <p>Vue d'ensemble de vos analyses de documents</p>
       </div>
 
       <div class="topbar-right">
-        <button class="btn-upload">
+        <button class="btn-upload" routerLink="/upload">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-          Upload a document
+          Upload un document
         </button>
 
         <!-- USER AVATAR -->
@@ -84,7 +84,7 @@
 
         <div class="stat-card">
           <div class="stat-header">
-            <span class="stat-label">Analysis Progress</span>
+            <span class="stat-label">Progression des analyses</span>
             <span class="stat-icon progress">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
             </span>
@@ -97,37 +97,48 @@
 
         <div class="stat-card">
           <div class="stat-header">
-            <span class="stat-label">Documents Analyzed</span>
+            <span class="stat-label">Documents analysés</span>
             <span class="stat-icon validated">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             </span>
           </div>
           <div class="stat-value">{{ stats.analyzed }}</div>
-          <div class="stat-sub">out of {{ stats.total }} total</div>
+          <div class="stat-sub">sur {{ stats.total }} au total</div>
         </div>
 
         <div class="stat-card">
           <div class="stat-header">
-            <span class="stat-label">Pending Analysis</span>
+            <span class="stat-label">Analyses en attente</span>
             <span class="stat-icon pending">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </span>
           </div>
           <div class="stat-value">{{ stats.pending }}</div>
-          <div class="stat-sub">awaiting review</div>
+          <div class="stat-sub">en cours de traitement</div>
         </div>
 
       </div>
 
       <!-- DOCUMENTS TABLE -->
       <div class="table-card">
-        <h2 class="table-title">Recent Documents</h2>
-        <table class="doc-table">
+        <h2 class="table-title">Documents récents</h2>
+
+        <!-- État vide -->
+        <div *ngIf="!loading && documents.length === 0" class="empty-state">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <p>Aucun document pour le moment.</p>
+          <a routerLink="/upload" class="btn-upload-small">Uploader votre premier document</a>
+        </div>
+
+        <!-- Tableau -->
+        <table *ngIf="documents.length > 0" class="doc-table">
           <thead>
           <tr>
-            <th>DOCUMENT NAME</th>
+            <th>NOM DU DOCUMENT</th>
             <th>DATE</th>
-            <th>STATUS</th>
+            <th>STATUT</th>
             <th>ACTIONS</th>
           </tr>
           </thead>
@@ -135,19 +146,19 @@
           <tr *ngFor="let doc of documents">
             <td class="doc-name">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              {{ doc.name }}
+              {{ doc.nomFichier }}
             </td>
-            <td class="doc-date">{{ doc.date }}</td>
+            <td class="doc-date">{{ formatDate(doc.dateTeleversement) }}</td>
             <td>
-                <span class="status-badge" [ngClass]="getStatusClass(doc.status)">
-                  <svg *ngIf="doc.status === 'Validated'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                  <svg *ngIf="doc.status === 'Pending'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  <svg *ngIf="doc.status === 'Error'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                  {{ doc.status }}
+                <span class="status-badge" [ngClass]="getStatusClass(doc.statut)">
+                  <svg *ngIf="doc.statut === 'TERMINE'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <svg *ngIf="doc.statut === 'EN_COURS'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <svg *ngIf="doc.statut === 'ERREUR'" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  {{ getStatusLabel(doc.statut) }}
                 </span>
             </td>
             <td>
-              <button [ngClass]="getActionClass(doc.status)">{{ getActionLabel(doc.status) }}</button>
+              <button [ngClass]="getActionClass(doc.statut)" (click)="onDocumentAction(doc)">{{ getActionLabel(doc.statut) }}</button>
             </td>
           </tr>
           </tbody>

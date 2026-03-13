@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth/auth.guard';
+import { authGuard, guestGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
+  // ── Routes publiques ──
   {
     path: '',
     loadComponent: () =>
@@ -10,24 +11,48 @@ export const routes: Routes = [
   {
     path: 'auth/login',
     loadComponent: () =>
-      import('./features/auth/login/login.component').then(m => m.LoginComponent)
+      import('./features/auth/login/login.component').then(m => m.LoginComponent),
+    canActivate: [guestGuard]
   },
   {
     path: 'auth/register',
     loadComponent: () =>
-      import('./features/auth/register/register.component').then(m => m.RegisterComponent)
+      import('./features/auth/register/register.component').then(m => m.RegisterComponent),
+    canActivate: [guestGuard]
   },
   {
     path: 'auth/forgot-password',
     loadComponent: () =>
       import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
   },
+
+  // ── Routes protégées (nécessitent une authentification) ──
   {
-  path: 'dashboard',
+    path: 'dashboard',
     loadComponent: () =>
       import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
     canActivate: [authGuard]
   },
+  {
+    path: 'upload',
+    loadComponent: () =>
+      import('./features/upload/upload.component').then(m => m.UploadComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'documents',
+    loadComponent: () =>
+      import('./features/documents/documents.component').then(m => m.DocumentsComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'analysis/:id',
+    loadComponent: () =>
+      import('./features/analysis/analysis.component').then(m => m.AnalysisComponent),
+    canActivate: [authGuard]
+  },
+
+  // ── Redirection par défaut ──
   {
     path: '**',
     redirectTo: ''

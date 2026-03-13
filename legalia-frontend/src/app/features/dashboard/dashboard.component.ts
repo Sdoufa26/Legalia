@@ -2,12 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService, UserResponse } from '../../core/auth/auth.service';
-
-interface Document {
-  name: string;
-  date: string;
-  status: 'Validated' | 'Pending' | 'Error';
-}
+import { DocumentService, DocumentResponse } from '../../services/document.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,43 +17,64 @@ export class DashboardComponent implements OnInit {
   loading = true;
   userMenuOpen = false;
 
+  // KPIs calculés à partir des vrais documents
   stats = {
-    progress: 50,
-    analyzed: 3,
-    total: 6,
-    pending: 2
+    progress: 0,
+    analyzed: 0,
+    total: 0,
+    pending: 0,
+    errors: 0
   };
 
-  documents: Document[] = [
-    { name: 'Contrat assurance habitation - Client Martin', date: '24 Jan 2026', status: 'Validated' },
-    { name: 'Police automobile entreprise - SAS Durand',   date: '23 Jan 2026', status: 'Validated' },
-    { name: 'Convention RC professionnelle - Cabinet Avocat', date: '22 Jan 2026', status: 'Pending'   },
-    { name: 'Contrat prévoyance collective - PME Solutions',  date: '21 Jan 2026', status: 'Validated' },
-    { name: 'Assurance cyber-risques - Tech Startup Inc',     date: '20 Jan 2026', status: 'Error'     },
-  ];
+  // Documents chargés depuis l'API
+  documents: DocumentResponse[] = [];
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private documentService: DocumentService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Essaie d'abord le cache, puis appelle le backend
+    // Charge le profil utilisateur
     const cached = this.authService.getCachedUser();
     if (cached) {
       this.user = cached;
-      this.loading = false;
     }
 
     this.authService.getProfile().subscribe({
-      next: (user : UserResponse) => {
+      next: (user: UserResponse) => {
         this.user = user;
-        this.loading = false;
       },
       error: () => {
         if (!cached) {
           this.authService.logout();
         }
+      }
+    });
+
+    // Charge les documents depuis le back-end
+    this.documentService.getDocuments().subscribe({
+      next: (docs: DocumentResponse[]) => {
+        this.documents = docs;
+        this.computeStats();
+        this.loading = false;
+      },
+      error: () => {
         this.loading = false;
       }
     });
+  }
+
+  /** Calcule les KPIs à partir de la liste de documents */
+  private computeStats(): void {
+    const total = this.documents.length;
+    const analyzed = this.documents.filter(d => d.statut === 'TERMINE').length;
+    const pending = this.documents.filter(d => d.statut === 'EN_COURS').length;
+    const errors = this.documents.filter(d => d.statut === 'ERREUR').length;
+    const progress = total > 0 ? Math.round((analyzed / total) * 100) : 0;
+
+    this.stats = { progress, analyzed, total, pending, errors };
   }
 
   get initials(): string {
@@ -79,25 +95,66 @@ export class DashboardComponent implements OnInit {
     this.authService.logout();
   }
 
-  getStatusClass(status: string): string {
-    return status.toLowerCase();
-  }
-
-  getActionLabel(status: string): string {
-    switch (status) {
-      case 'Validated': return 'View Analysis';
-      case 'Pending':   return 'Analyze';
-      case 'Error':     return 'Retry';
-      default:          return 'View';
+  /** Retourne la classe CSS selon le statut du document */
+  getStatusClass(statut: string): string {
+    switch (statut) {
+      case 'TERMINE':  return 'validated';
+      case 'EN_COURS': return 'pending';
+      case 'ERREUR':   return 'error';
+      default:         return '';
     }
   }
 
-  getActionClass(status: string): string {
-    switch (status) {
-      case 'Validated': return 'btn-action primary';
-      case 'Pending':   return 'btn-action secondary';
-      case 'Error':     return 'btn-action danger';
-      default:          return 'btn-action';
+  /** Retourne le label lisible du statut */
+  getStatusLabel(statut: string): string {
+    switch (statut) {
+      case 'TERMINE':  return 'Terminé';
+      case 'EN_COURS': return 'En cours';
+      case 'ERREUR':   return 'Erreur';
+      default:         return statut;
+    }
+  }
+
+  /** Retourne le label du bouton d'action selon le statut */
+  getActionLabel(statut: string): string {
+    switch (statut) {
+      case 'TERMINE':  return 'Voir l\'analyse';
+      case 'EN_COURS': return 'En cours…';
+      case 'ERREUR':   return 'Réessayer';
+      default:         return 'Voir';
+    }
+  }
+
+  /** Retourne la classe du bouton d'action */
+  getActionClass(statut: string): string {
+    switch (statut) {
+      case 'TERMINE':  return 'btn-action primary';
+      case 'EN_COURS': return 'btn-action secondary';
+      case 'ERREUR':   return 'btn-action danger';
+      default:         return 'btn-action';
+    }
+  }
+
+  /** Action sur clic du bouton (ouvre l'analyse ou redirige vers upload) */
+  onDocumentAction(doc: DocumentResponse): void {
+    if (doc.statut === 'TERMINE') {
+      this.router.navigate(['/analysis', doc.id]);
+    } else if (doc.statut === 'ERREUR') {
+      this.router.navigate(['/upload']);
+    }
+  }
+
+  /** Formate la date depuis le back-end */
+  formatDate(dateStr: string): string {
+    try {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    } catch {
+      return dateStr;
     }
   }
 }
