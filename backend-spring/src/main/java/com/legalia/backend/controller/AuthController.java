@@ -1,11 +1,11 @@
 package com.legalia.backend.controller;
 
 import com.legalia.backend.config.JwtUtil;
-import com.legalia.backend.dto.LoginRequest;
-import com.legalia.backend.dto.RegisterRequest;
-import com.legalia.backend.dto.TokenResponse;
-import com.legalia.backend.dto.UserResponse;
+import com.legalia.backend.dto.*;
 import com.legalia.backend.service.AuthService;
+import com.legalia.backend.dto.ForgotPasswordRequest;
+import com.legalia.backend.dto.ResetPasswordRequest;
+import com.legalia.backend.service.PasswordResetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +25,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtUtil jwtUtil;
+    private final PasswordResetService passwordResetService;
 
     /**
      * POST /api/auth/register
@@ -72,5 +73,31 @@ public class AuthController {
 
         UserResponse response = authService.getProfile(email);
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * POST /api/auth/forgot-password  [PUBLIC]
+     * Envoie un email de réinitialisation si l'adresse existe en base.
+     * Retourne toujours 200 pour ne pas révéler si l'email est enregistré.
+     */
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        passwordResetService.sendResetEmail(request.getEmail());
+        return ResponseEntity.ok(Map.of("message", "Si cet email existe, un lien a été envoyé."));
+    }
+
+    /**
+     * POST /api/auth/reset-password  [PUBLIC]
+     * Vérifie le token de réinitialisation et met à jour le mot de passe.
+     * Retourne 400 si le token est invalide, expiré ou déjà utilisé.
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        try {
+            passwordResetService.resetPassword(request.getToken(), request.getNewPassword());
+            return ResponseEntity.ok(Map.of("message", "Mot de passe mis à jour avec succès."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("erreur", e.getMessage()));
+        }
     }
 }
