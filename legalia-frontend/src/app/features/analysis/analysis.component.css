@@ -12,11 +12,14 @@
 /* ── EN-TÊTE ── */
 .page-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 14px;
   padding: 28px 40px 20px;
   background: #fff;
   border-bottom: 1px solid #e8eef8;
+}
+.header-info {
+  flex: 1;
 }
 .page-header h1 {
   font-size: 24px;
@@ -44,6 +47,40 @@
   flex-shrink: 0;
 }
 .btn-back:hover { background: #f0f2f5; }
+
+/* ── BOUTON EXPORT PDF ── */
+.btn-export-pdf {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a2e5a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-export-pdf:hover {
+  background: #243d72;
+  box-shadow: 0 4px 12px rgba(26, 46, 90, 0.25);
+}
+.btn-export-pdf:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
 
 .btn-back-text {
   background: #f0f2f5;
@@ -227,6 +264,12 @@
   }
   .page-header {
     padding: 20px 16px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .page-header h1 { font-size: 20px; }
+  .btn-export-pdf {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
 }

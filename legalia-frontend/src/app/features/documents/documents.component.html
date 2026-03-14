@@ -1,38 +1,7 @@
 <div class="layout">
 
   <!-- ── SIDEBAR ── -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <span class="logo-icon">⚖️</span>
-      <span class="logo-text">LEGALIA</span>
-    </div>
-    <nav class="sidebar-nav">
-      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-item">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        </span>
-        Dashboard
-      </a>
-      <a routerLink="/documents" routerLinkActive="active" class="nav-item">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        </span>
-        Documents
-      </a>
-      <a routerLink="/upload" routerLinkActive="active" class="nav-item">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        </span>
-        Upload
-      </a>
-      <a routerLink="/analysis" routerLinkActive="active" class="nav-item">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </span>
-        Analysis
-      </a>
-    </nav>
-  </aside>
+  <app-sidebar></app-sidebar>
 
   <!-- ── MAIN ── -->
   <main class="main">
@@ -67,9 +36,38 @@
         <a routerLink="/upload" class="btn-upload-small">Uploader un document</a>
       </div>
 
+      <!-- Barre de filtres -->
+      <div *ngIf="!loading && documents.length > 0" class="filters-bar">
+        <div class="search-wrapper">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="search-input" placeholder="Rechercher un document…" [(ngModel)]="searchQuery" />
+        </div>
+        <select class="filter-select" [(ngModel)]="filterStatut">
+          <option value="">Tous les statuts</option>
+          <option value="TERMINE">Terminé</option>
+          <option value="EN_COURS">En cours</option>
+          <option value="ERREUR">Erreur</option>
+        </select>
+        <select class="filter-select" [(ngModel)]="filterCategorie">
+          <option value="">Toutes les catégories</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <button *ngIf="hasActiveFilters" class="btn-clear-filters" (click)="clearFilters()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Réinitialiser
+        </button>
+        <span class="filter-count">{{ filteredDocuments.length }} document{{ filteredDocuments.length > 1 ? 's' : '' }}</span>
+      </div>
+
       <!-- Tableau des documents -->
       <div *ngIf="!loading && documents.length > 0" class="table-card">
-        <table class="doc-table">
+        <!-- Aucun résultat filtré -->
+        <div *ngIf="filteredDocuments.length === 0" class="no-results">
+          <p>Aucun document ne correspond à vos filtres.</p>
+          <button class="btn-clear-small" (click)="clearFilters()">Réinitialiser les filtres</button>
+        </div>
+
+        <table *ngIf="filteredDocuments.length > 0" class="doc-table">
           <thead>
           <tr>
             <th>NOM DU DOCUMENT</th>
@@ -81,7 +79,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let doc of documents" (click)="onDocumentAction(doc)" class="clickable-row">
+          <tr *ngFor="let doc of filteredDocuments" (click)="onDocumentAction(doc)" class="clickable-row">
             <td class="doc-name">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               {{ doc.nomFichier }}

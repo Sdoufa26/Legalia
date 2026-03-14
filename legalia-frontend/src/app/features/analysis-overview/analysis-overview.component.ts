@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { forkJoin } from 'rxjs';
 import { AuthService, UserResponse } from '../../core/auth/auth.service';
 import {
@@ -22,7 +23,7 @@ interface AnalyzedDocSummary {
 @Component({
   selector: 'app-analysis-overview',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive, SidebarComponent],
   templateUrl: './analysis-overview.component.html',
   styleUrl: './analysis-overview.component.css'
 })

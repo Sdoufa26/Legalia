@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DocumentService, DocumentResponse } from '../../services/document.service';
+import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive, SidebarComponent],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.css'
 })
@@ -14,6 +16,11 @@ export class DocumentsComponent implements OnInit {
 
   documents: DocumentResponse[] = [];
   loading = true;
+
+  // Filtres
+  searchQuery = '';
+  filterStatut = '';
+  filterCategorie = '';
 
   // Modale de confirmation de suppression
   showDeleteModal = false;
@@ -35,6 +42,32 @@ export class DocumentsComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  /** Documents filtrés selon recherche, statut et catégorie */
+  get filteredDocuments(): DocumentResponse[] {
+    return this.documents.filter(doc => {
+      const matchSearch = !this.searchQuery ||
+        doc.nomFichier.toLowerCase().includes(this.searchQuery.toLowerCase());
+      const matchStatut = !this.filterStatut || doc.statut === this.filterStatut;
+      const matchCategorie = !this.filterCategorie || doc.categorie === this.filterCategorie;
+      return matchSearch && matchStatut && matchCategorie;
+    });
+  }
+
+  /** Liste des catégories uniques présentes */
+  get categories(): string[] {
+    return [...new Set(this.documents.map(d => d.categorie).filter(Boolean))];
+  }
+
+  clearFilters(): void {
+    this.searchQuery = '';
+    this.filterStatut = '';
+    this.filterCategorie = '';
+  }
+
+  get hasActiveFilters(): boolean {
+    return !!(this.searchQuery || this.filterStatut || this.filterCategorie);
   }
 
   getStatusClass(statut: string): string {
@@ -99,21 +132,18 @@ export class DocumentsComponent implements OnInit {
     return `${(sizeKb / 1024).toFixed(1)} Mo`;
   }
 
-  /** Ouvre la modale de confirmation */
   openDeleteModal(event: Event, doc: DocumentResponse): void {
     event.stopPropagation();
     this.documentToDelete = doc;
     this.showDeleteModal = true;
   }
 
-  /** Ferme la modale */
   closeDeleteModal(): void {
     this.showDeleteModal = false;
     this.documentToDelete = null;
     this.deleting = false;
   }
 
-  /** Confirme la suppression */
   confirmDelete(): void {
     if (!this.documentToDelete) return;
     this.deleting = true;
