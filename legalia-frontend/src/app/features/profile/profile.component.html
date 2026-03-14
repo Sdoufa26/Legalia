@@ -41,7 +41,7 @@
     <header class="topbar">
       <div class="topbar-title">
         <h1>Mon Profil</h1>
-        <p>Vos informations personnelles</p>
+        <p>Gérez vos informations personnelles</p>
       </div>
       <div class="topbar-right">
         <div class="user-menu-wrapper">
@@ -86,8 +86,18 @@
           <div class="section-header">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <h3>Informations personnelles</h3>
+            <button *ngIf="!editingProfile" class="btn-edit" (click)="startEditProfile()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Modifier
+            </button>
           </div>
-          <div class="info-list">
+
+          <!-- Message de succès -->
+          <div *ngIf="profileSuccess" class="msg-success">{{ profileSuccess }}</div>
+          <div *ngIf="profileError" class="msg-error">{{ profileError }}</div>
+
+          <!-- Mode lecture -->
+          <div *ngIf="!editingProfile" class="info-list">
             <div class="info-row">
               <span class="info-label">Prénom</span>
               <span class="info-value">{{ user?.prenom }}</span>
@@ -103,6 +113,29 @@
             <div class="info-row">
               <span class="info-label">Date d'inscription</span>
               <span class="info-value">{{ formatDate(user?.dateInscription ?? '') }}</span>
+            </div>
+          </div>
+
+          <!-- Mode édition -->
+          <div *ngIf="editingProfile" class="edit-form">
+            <div class="form-group">
+              <label>Prénom</label>
+              <input type="text" [(ngModel)]="editPrenom" placeholder="Votre prénom" />
+            </div>
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" [(ngModel)]="editNom" placeholder="Votre nom" />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" [value]="user?.email" disabled class="input-disabled" />
+              <span class="input-hint">L'email ne peut pas être modifié</span>
+            </div>
+            <div class="form-actions">
+              <button class="btn-save" (click)="saveProfile()" [disabled]="profileSaving">
+                {{ profileSaving ? 'Enregistrement…' : 'Enregistrer' }}
+              </button>
+              <button class="btn-cancel" (click)="cancelEditProfile()" [disabled]="profileSaving">Annuler</button>
             </div>
           </div>
         </div>
@@ -132,6 +165,38 @@
         </div>
 
       </div>
+
+      <!-- CHANGER LE MOT DE PASSE -->
+      <div class="section-card password-section">
+        <div class="section-header">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <h3>Changer le mot de passe</h3>
+        </div>
+
+        <div *ngIf="passwordSuccess" class="msg-success">{{ passwordSuccess }}</div>
+        <div *ngIf="passwordError" class="msg-error">{{ passwordError }}</div>
+
+        <div class="edit-form">
+          <div class="form-group">
+            <label>Mot de passe actuel</label>
+            <input type="password" [(ngModel)]="currentPassword" placeholder="Votre mot de passe actuel" />
+          </div>
+          <div class="form-group">
+            <label>Nouveau mot de passe</label>
+            <input type="password" [(ngModel)]="newPassword" placeholder="Minimum 6 caractères" />
+          </div>
+          <div class="form-group">
+            <label>Confirmer le nouveau mot de passe</label>
+            <input type="password" [(ngModel)]="confirmPassword" placeholder="Retapez le nouveau mot de passe" />
+          </div>
+          <div class="form-actions">
+            <button class="btn-save" (click)="savePassword()" [disabled]="passwordSaving">
+              {{ passwordSaving ? 'Modification…' : 'Modifier le mot de passe' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 </div>

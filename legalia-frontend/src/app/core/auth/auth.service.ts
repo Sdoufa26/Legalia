@@ -67,6 +67,18 @@ export class AuthService {
     );
   }
 
+  /** Met à jour le prénom et nom de l'utilisateur */
+  updateProfile(prenom: string, nom: string): Observable<UserResponse> {
+    return this.http.put<UserResponse>(`${this.API}/profile`, { prenom, nom }).pipe(
+      tap(user => { this.cachedUser = user; })
+    );
+  }
+
+  /** Change le mot de passe */
+  changePassword(currentPassword: string, newPassword: string): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.API}/password`, { currentPassword, newPassword });
+  }
+
   /** Retourne le token JWT courant (ou null) */
   getToken(): string | null {
     return this.accessToken;
