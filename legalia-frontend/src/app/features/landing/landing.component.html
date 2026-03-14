@@ -1,70 +1,183 @@
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-logo">
-    <span class="logo-icon">⚖️</span>
+    <svg class="logo-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+      <path d="M12 3L1 9l11 6 9-4.91V17M5 13.18v4L12 21l7-3.82v-4"/>
+    </svg>
     <span class="logo-text">LEGALIA</span>
   </div>
-  <a routerLink="/auth/login" class="btn-signin">Sign in</a>
+  <div class="nav-actions">
+    <a routerLink="/auth/login" class="btn-nav-login">Se connecter</a>
+    <a routerLink="/auth/register" class="btn-nav-register">S'inscrire</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <h1 class="hero-title">Understand your insurance contracts<br>instantly.</h1>
-  <p class="hero-sub">LEGALIA uses AI to analyze insurance contracts and highlight risks, alerts and opportunities.</p>
+  <div class="hero-badge">Analyse juridique par IA</div>
+  <h1 class="hero-title">Comprenez vos contrats<br>en quelques secondes</h1>
+  <p class="hero-sub">LEGALIA analyse vos contrats d'assurance avec l'intelligence artificielle pour identifier les risques, alertes et clauses importantes.</p>
   <div class="hero-buttons">
-    <a routerLink="/auth/login" class="btn-primary">Try the demo →</a>
-    <button class="btn-secondary">See how it works</button>
+    <a routerLink="/auth/register" class="btn-primary">
+      Commencer gratuitement
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="#how-it-works" class="btn-secondary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      Voir comment ça marche
+    </a>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-bar">
+  <div class="stat">
+    <span class="stat-number">500+</span>
+    <span class="stat-label">Contrats analysés</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-number">98%</span>
+    <span class="stat-label">Précision IA</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-number">10x</span>
+    <span class="stat-label">Plus rapide</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-number">24/7</span>
+    <span class="stat-label">Disponible</span>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="how-it-works">
-  <h2 class="section-title">How it works</h2>
-  <p class="section-sub">Get AI-powered contract analysis in 3 simple steps</p>
+<section class="how-it-works" id="how-it-works">
+  <h2 class="section-title">Comment ça marche ?</h2>
+  <p class="section-sub">Obtenez une analyse complète en 3 étapes simples</p>
   <div class="steps">
     <div class="step">
       <div class="step-number">1</div>
-      <div class="step-icon">📤</div>
-      <h3>Upload your contract</h3>
-      <p>Simply drag and drop your insurance contract (PDF or DOCX)</p>
+      <div class="step-icon-box">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <h3>Déposez votre contrat</h3>
+      <p>Glissez-déposez votre contrat d'assurance au format PDF</p>
+    </div>
+    <div class="step-connector">
+      <svg width="40" height="24" viewBox="0 0 40 24" fill="none"><path d="M0 12h36M30 6l6 6-6 6" stroke="#d0d8e8" stroke-width="2"/></svg>
     </div>
     <div class="step">
       <div class="step-number">2</div>
-      <div class="step-icon">🤖</div>
-      <h3>AI analyzes clauses</h3>
-      <p>Our specialized AI reviews every clause in seconds</p>
+      <div class="step-icon-box">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <line x1="8" y1="11" x2="14" y2="11"/><line x1="11" y1="8" x2="11" y2="14"/>
+        </svg>
+      </div>
+      <h3>L'IA analyse les clauses</h3>
+      <p>Notre intelligence artificielle examine chaque clause en quelques secondes</p>
+    </div>
+    <div class="step-connector">
+      <svg width="40" height="24" viewBox="0 0 40 24" fill="none"><path d="M0 12h36M30 6l6 6-6 6" stroke="#d0d8e8" stroke-width="2"/></svg>
     </div>
     <div class="step">
       <div class="step-number">3</div>
-      <div class="step-icon">📋</div>
-      <h3>Get clear legal insights</h3>
-      <p>Receive alerts, risks, and opportunities highlighted</p>
+      <div class="step-icon-box">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <h3>Recevez votre rapport</h3>
+      <p>Consultez les risques, alertes et recommandations dans un rapport clair</p>
     </div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="features">
-  <h2 class="section-title">Why legal professionals trust LEGALIA</h2>
+  <h2 class="section-title">Pourquoi choisir LEGALIA ?</h2>
+  <p class="section-sub">Des fonctionnalités pensées pour les professionnels du droit</p>
   <div class="feature-cards">
     <div class="feature-card">
-      <h3>Reduce legal uncertainty</h3>
-      <p>Identify hidden risks and ambiguous clauses before they become problems</p>
+      <div class="feature-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <h3>Réduisez l'incertitude juridique</h3>
+      <p>Identifiez les risques cachés et les clauses ambiguës avant qu'ils ne deviennent des problèmes coûteux.</p>
     </div>
     <div class="feature-card">
-      <h3>Faster contract understanding</h3>
-      <p>Get comprehensive analysis in seconds instead of hours of manual review</p>
+      <div class="feature-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <h3>Gagnez un temps précieux</h3>
+      <p>Obtenez une analyse complète en quelques secondes au lieu de plusieurs heures de lecture manuelle.</p>
     </div>
     <div class="feature-card">
-      <h3>Human-validated AI results</h3>
-      <p>Our AI is trained by legal experts specifically for insurance contracts</p>
+      <div class="feature-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h3>Résultats fiables</h3>
+      <p>Notre IA est spécialisée dans l'analyse de contrats d'assurance avec un taux de précision de 98%.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a3a8f" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </div>
+      <h3>Export PDF professionnel</h3>
+      <p>Téléchargez vos rapports d'analyse au format PDF pour les partager avec vos clients ou collaborateurs.</p>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta">
-  <h2>Ready to analyze your first contract?</h2>
-  <p>Join legal professionals who save time with AI-powered contract analysis</p>
-  <a routerLink="/auth/login" class="btn-cta">Try the demo now →</a>
+  <h2>Prêt à analyser votre premier contrat ?</h2>
+  <p>Rejoignez les professionnels qui gagnent du temps grâce à l'analyse juridique par IA</p>
+  <a routerLink="/auth/register" class="btn-cta">
+    Créer un compte gratuitement
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
 </section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+          <path d="M12 3L1 9l11 6 9-4.91V17M5 13.18v4L12 21l7-3.82v-4"/>
+        </svg>
+        <span>LEGALIA</span>
+      </div>
+      <p class="footer-desc">Analyse intelligente de contrats d'assurance par intelligence artificielle.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <a routerLink="/auth/register">S'inscrire</a>
+        <a routerLink="/auth/login">Se connecter</a>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <a href="#">Mentions légales</a>
+        <a href="#">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 LEGALIA. Tous droits réservés.</p>
+  </div>
+</footer>
