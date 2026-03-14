@@ -1,10 +1,7 @@
 package com.legalia.backend.service;
 
 import com.legalia.backend.config.JwtUtil;
-import com.legalia.backend.dto.LoginRequest;
-import com.legalia.backend.dto.RegisterRequest;
-import com.legalia.backend.dto.TokenResponse;
-import com.legalia.backend.dto.UserResponse;
+import com.legalia.backend.dto.*;
 import com.legalia.backend.model.Utilisateur;
 import com.legalia.backend.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
@@ -94,6 +91,31 @@ public class AuthService implements UserDetailsService {
         Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
         return toUserResponse(utilisateur);
+    }
+
+    /**
+     * Met à jour le prénom et nom de l'utilisateur.
+     */
+    public UserResponse updateProfile(String email, UpdateProfileRequest request) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+        utilisateur.setPrenom(request.getPrenom());
+        utilisateur.setNom(request.getNom());
+        Utilisateur saved = utilisateurRepository.save(utilisateur);
+        return toUserResponse(saved);
+    }
+
+    /**
+     * Change le mot de passe de l'utilisateur après vérification de l'ancien.
+     */
+    public void changePassword(String email, ChangePasswordRequest request) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+        if (!passwordEncoder.matches(request.getCurrentPassword(), utilisateur.getMotDePasseHash())) {
+            throw new IllegalArgumentException("Mot de passe actuel incorrect");
+        }
+        utilisateur.setMotDePasseHash(passwordEncoder.encode(request.getNewPassword()));
+        utilisateurRepository.save(utilisateur);
     }
 
     // Conversion entité → DTO (jamais de mot de passe dans la réponse)
