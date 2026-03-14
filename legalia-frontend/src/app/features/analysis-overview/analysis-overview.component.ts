@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { forkJoin } from 'rxjs';
@@ -44,6 +45,11 @@ export class AnalysisOverviewComponent implements OnInit {
     totalMoyen: 0,
     totalFaible: 0
   };
+
+  // Modale de confirmation de suppression
+  showDeleteModal = false;
+  documentToDelete: AnalyzedDocSummary | null = null;
+  deleting = false;
 
   constructor(
     private authService: AuthService,
@@ -157,5 +163,37 @@ export class AnalysisOverviewComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  /** Ouvre la modale de confirmation */
+  openDeleteModal(event: Event, item: AnalyzedDocSummary): void {
+    event.stopPropagation();
+    this.documentToDelete = item;
+    this.showDeleteModal = true;
+  }
+
+  /** Ferme la modale */
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.documentToDelete = null;
+    this.deleting = false;
+  }
+
+  /** Confirme la suppression */
+  confirmDelete(): void {
+    if (!this.documentToDelete) return;
+    this.deleting = true;
+    this.documentService.deleteDocument(this.documentToDelete.document.id).subscribe({
+      next: () => {
+        this.analyzedDocs = this.analyzedDocs.filter(
+          d => d.document.id !== this.documentToDelete!.document.id
+        );
+        this.computeGlobalStats();
+        this.closeDeleteModal();
+      },
+      error: () => {
+        this.deleting = false;
+      }
+    });
   }
 }
