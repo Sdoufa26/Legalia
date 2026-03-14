@@ -23,8 +23,10 @@ public class PasswordResetService {
     private final JavaMailSender mailSender;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${app.frontend-url}")
+    @Value("${app.cors.frontend-url}")
     private String frontendUrl;
+    @Value("${spring.mail.username}")
+    private String fromEmail;
 
     /**
      * Génère un token et envoie le mail via Resend.
@@ -46,7 +48,7 @@ public class PasswordResetService {
         String resetLink = frontendUrl + "/auth/reset-password?token=" + token;
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("onboarding@resend.dev"); // à remplacer par ton domaine vérifié plus tard
+        message.setFrom(fromEmail);
         message.setTo(email);
         message.setSubject("LEGALIA — Réinitialisation de votre mot de passe");
         message.setText(
