@@ -2,15 +2,20 @@
 Routes FastAPI pour l'analyse de contrats d'assurance.
 """
 
+import asyncio
 import logging
 from fastapi import APIRouter, UploadFile, File, HTTPException
 
-from app.models.schemas import AnalyzeResponse, ClauseResult, HealthResponse, NiveauVigilance
+from app.models.schemas import AnalyzeResponse, ClauseResult, HealthResponse, NiveauVigilance, ProgressionResponse
 from app.services import pdf_service, ai_service, rag_service
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api")
+
+# Suivi de progression par document : { filename: { "total": N, "done": K } }
+# Alimenté pendant l'analyse, nettoyé à la fin
+_progressions: dict[str, dict] = {}
 
 
 @router.post("/analyze", response_model=AnalyzeResponse)
@@ -61,11 +66,25 @@ async def analyze_contract(
 
     logger.info(f"{len(clauses)} clauses à analyser dans '{file.filename}'")
 
-    # Étape 3 : Analyse IA (RAG + Gemini)
+    # Initialisation de la progression pour ce document
+    _progressions[file.filename] = {"total": len(clauses), "done": 0}
+
+    def on_clause_done():
+        """Incrémente le compteur après chaque clause analysée."""
+        if file.filename in _progressions:
+            _progressions[file.filename]["done"] += 1
+
+    # Étape 3 : Analyse IA dans un thread pour ne pas bloquer l'event loop
+    # (permet de servir les requêtes /progress pendant l'analyse)
     try:
-        resultats_bruts = ai_service.analyze_contract(clauses)
+        resultats_bruts = await asyncio.to_thread(
+            ai_service.analyze_contract, clauses, on_clause_done
+        )
     except RuntimeError as e:
         raise HTTPException(status_code=503, detail=str(e))
+    finally:
+        # Nettoyage de la progression une fois l'analyse terminée
+        _progressions.pop(file.filename, None)
 
     # Étape 4 : Construction de la réponse typée
     clauses_resultat = [
@@ -86,6 +105,24 @@ async def analyze_contract(
         nb_clauses=len(clauses_resultat),
         clauses=clauses_resultat,
     )
+
+
+@router.get("/analyze/progress/{filename}", response_model=ProgressionResponse)
+async def get_progression(filename: str):
+    """
+    Retourne la progression en temps réel de l'analyse d'un document.
+    À interroger par polling pendant que POST /api/analyze tourne.
+    """
+    if filename not in _progressions:
+        raise HTTPException(
+            status_code=404,
+            detail="Aucune analyse en cours pour ce document."
+        )
+    prog = _progressions[filename]
+    total = prog["total"]
+    done = prog["done"]
+    progression = round((done / total) * 100) if total > 0 else 0
+    return ProgressionResponse(total_clauses=total, clauses_analysees=done, progression=progression)
 
 
 @router.get("/health", response_model=HealthResponse)

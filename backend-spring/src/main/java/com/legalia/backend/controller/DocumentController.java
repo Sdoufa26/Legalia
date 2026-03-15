@@ -2,6 +2,7 @@ package com.legalia.backend.controller;
 
 import com.legalia.backend.dto.CarteResultatResponse;
 import com.legalia.backend.dto.DocumentResponse;
+import com.legalia.backend.dto.DocumentStatusResponse;
 import com.legalia.backend.dto.DocumentUploadResponse;
 import com.legalia.backend.model.CarteResultat;
 import com.legalia.backend.model.Document;
@@ -37,8 +38,8 @@ public class DocumentController {
 
     /**
      * POST /api/documents/upload
-     * Upload d'un fichier PDF, stockage sur disque, puis analyse IA synchrone.
-     * Retourne les métadonnées du document et les résultats de l'analyse.
+     * Stocke le fichier PDF et retourne immédiatement (statut EN_COURS).
+     * L'analyse IA est lancée en arrière-plan via @Async.
      */
     @PostMapping("/upload")
     public ResponseEntity<?> uploadDocument(@RequestParam("file") MultipartFile file,
@@ -51,6 +52,7 @@ public class DocumentController {
             return ResponseEntity.badRequest().body(Map.of("erreur", "Impossible de lire le fichier"));
         }
 
+        // Stockage du fichier et création de l'entrée en BDD (statut EN_COURS)
         Document document;
         try {
             document = documentService.uploadDocument(file, authentication.getName());
@@ -61,18 +63,12 @@ public class DocumentController {
                     .body(Map.of("erreur", "Erreur lors de l'upload du document"));
         }
 
-        // Lancement de l'analyse IA (synchrone — peut prendre jusqu'à 120s)
-        log.info("Déclenchement de l'analyse IA pour le document '{}'", document.getNomFichier());
-        List<CarteResultat> cartes = analysisService.analyzeAndSave(document, pdfBytes);
+        // Lancement de l'analyse en arrière-plan (non bloquant)
+        log.info("Déclenchement de l'analyse IA asynchrone pour '{}'", document.getNomFichier());
+        analysisService.analyzeAndSaveAsync(document.getId(), pdfBytes);
 
-        // Rechargement du document pour avoir le statut mis à jour (TERMINE ou ERREUR)
-        document = documentService.getDocumentById(document.getId(), authentication.getName());
-
-        List<CarteResultatResponse> clausesResponse = cartes.stream()
-                .map(this::toCarteResponse)
-                .toList();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(toUploadResponse(document, clausesResponse));
+        // Retour immédiat — le front devra poller /status pour suivre l'avancement
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(toUploadResponse(document));
     }
 
     /**
@@ -91,7 +87,6 @@ public class DocumentController {
     /**
      * GET /api/documents/{id}
      * Retourne le détail d'un document si il appartient à l'utilisateur connecté.
-     * Retourne 403 si le document appartient à quelqu'un d'autre, 404 si introuvable.
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getDocumentById(@PathVariable UUID id,
@@ -99,6 +94,32 @@ public class DocumentController {
         try {
             Document document = documentService.getDocumentById(id, authentication.getName());
             return ResponseEntity.ok(toDocumentResponse(document));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("erreur", "Document introuvable"));
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("erreur", "Accès refusé à ce document"));
+        }
+    }
+
+    /**
+     * GET /api/documents/{id}/status
+     * Retourne le statut actuel du document (EN_COURS, TERMINE, ERREUR).
+     * Utilisé par le front pour poller l'avancement de l'analyse.
+     */
+    @GetMapping("/{id}/status")
+    public ResponseEntity<?> getDocumentStatus(@PathVariable UUID id,
+                                               Authentication authentication) {
+        try {
+            Document document = documentService.getDocumentById(id, authentication.getName());
+            return ResponseEntity.ok(DocumentStatusResponse.builder()
+                    .idDocument(document.getId())
+                    .statut(document.getStatut().name())
+                    .progression(document.getProgression())
+                    .clausesAnalysees(document.getClausesAnalysees())
+                    .totalClauses(document.getTotalClauses())
+                    .build());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("erreur", "Document introuvable"));
@@ -139,7 +160,6 @@ public class DocumentController {
     /**
      * DELETE /api/documents/{id}
      * Supprime un document et ses résultats d'analyse.
-     * Retourne 204 si succès, 403 si accès refusé, 404 si introuvable.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDocument(@PathVariable UUID id,
@@ -158,11 +178,7 @@ public class DocumentController {
 
     // --- Conversions entité → DTO ---
 
-    private DocumentUploadResponse toUploadResponse(Document doc, List<CarteResultatResponse> clauses) {
-        String message = doc.getStatut() == Document.StatutDocument.TERMINE
-                ? "Document analysé avec succès (" + clauses.size() + " clauses)"
-                : "Document uploadé — l'analyse IA a échoué";
-
+    private DocumentUploadResponse toUploadResponse(Document doc) {
         return DocumentUploadResponse.builder()
                 .idDocument(doc.getId())
                 .nomFichier(doc.getNomFichier())
@@ -170,8 +186,8 @@ public class DocumentController {
                 .dateTeleversement(doc.getDateTeleversement())
                 .categorie(doc.getCategorie().name())
                 .statut(doc.getStatut().name())
-                .message(message)
-                .clauses(clauses)
+                .message("Document reçu — analyse IA en cours")
+                .clauses(List.of())
                 .build();
     }
 

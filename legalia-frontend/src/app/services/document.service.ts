@@ -22,6 +22,13 @@ export interface CarteResultatResponse {
   sourceJuridique: string;
 }
 
+export interface DocumentStatusResponse {
+  statut: string;          // EN_COURS, TERMINE, ERREUR
+  progression: number;     // 0 à 100
+  clausesAnalysees: number;
+  totalClauses: number;
+}
+
 export interface DocumentUploadResponse {
   idDocument: string;
   nomFichier: string;
@@ -60,6 +67,11 @@ export class DocumentService {
   /** Récupère les résultats d'analyse (cartes de résultat) d'un document */
   getDocumentResults(id: string): Observable<CarteResultatResponse[]> {
     return this.http.get<CarteResultatResponse[]>(`${this.API}/${id}/results`);
+  }
+
+  /** Récupère le statut d'analyse en temps réel d'un document */
+  getDocumentStatus(id: string): Observable<DocumentStatusResponse> {
+    return this.http.get<DocumentStatusResponse>(`${this.API}/${id}/status`);
   }
 
   /** Supprime un document par son ID */

@@ -1,47 +1,127 @@
 CODE DES ASSURANCES - EXTRAITS PERTINENTS
-Dernière mise à jour : Version de référence pour tests RAG Legalia
+Référence complète pour le service RAG Legalia
 =========================================================================
 
-Article L112-4 - Présentation et lisibilité du contrat
+Article L111-2 - Information précontractuelle
 -----------------------------------------------------------------------
-Les clauses des polices édictant des nullités, des déchéances ou des exclusions ne sont valables que si elles sont mentionnées en caractères très apparents. L'assureur doit remettre à l'assuré une notice d'information décrivant les garanties, leurs conditions d'application ainsi que les exclusions. Cette obligation de lisibilité vise à protéger l'assuré contre les clauses surprenantes dissimulées dans les contrats.
+Avant la conclusion d'un contrat d'assurance, l'assureur ou son mandataire doit remettre à l'assuré une fiche d'information sur le prix et les garanties. Cette fiche doit être rédigée de manière claire et compréhensible. Pour les contrats d'assurance de dommages non professionnels, l'assureur remet une fiche standardisée d'information dont le contenu est fixé par arrêté. L'obligation d'information précontractuelle vise à permettre à l'assuré de comparer les offres et de prendre une décision éclairée avant de souscrire. Tout manquement à cette obligation peut engager la responsabilité de l'assureur.
 
-Article L113-1 - Exclusions de garantie et déclarations de risque
+Article L112-2 - Proposition d'assurance
 -----------------------------------------------------------------------
-Les pertes et les dommages occasionnés par des cas fortuits ou causés par la faute de l'assuré sont à la charge de l'assureur, sauf exclusion formelle et limitée contenue dans la police. Toutefois, l'assureur ne répond pas des pertes et dommages provenant d'une faute intentionnelle ou dolosive de l'assuré. Les exclusions de garantie doivent être formelles et limitées : elles ne peuvent être larges ou imprécises, et doivent être rédigées clairement pour être opposables à l'assuré.
+La proposition d'assurance n'engage ni l'assuré ni l'assureur. Elle constitue une simple offre de contracter. L'assureur peut accepter ou refuser cette proposition. Le contrat est formé dès que l'assureur a donné son accord. La proposition d'assurance doit indiquer les conditions essentielles du contrat proposé. Lorsque la proposition est faite par l'assureur, elle est obligatoire pour lui pendant le délai qu'elle indique. L'assureur ne peut modifier les conditions proposées après acceptation de l'assuré, sauf à respecter les procédures de modification prévues au contrat.
+
+Article L112-4 - Remise des documents contractuels
+-----------------------------------------------------------------------
+Les clauses des polices édictant des nullités, des déchéances ou des exclusions ne sont valables que si elles sont mentionnées en caractères très apparents. L'assureur doit remettre à l'assuré un exemplaire du contrat signé des deux parties ou, à défaut, une note de couverture, une police ou tout autre document indiquant les garanties accordées et les exclusions prévues. L'assureur doit également remettre une notice d'information décrivant les garanties, leurs conditions d'application ainsi que les exclusions. Cette obligation de remise vise à protéger l'assuré contre les clauses surprenantes dissimulées dans des documents inaccessibles. Les clauses non portées à la connaissance de l'assuré lui sont inopposables.
+
+Article L112-6 - Devoir de conseil de l'assureur
+-----------------------------------------------------------------------
+Avant la conclusion d'un contrat, l'assureur ou l'intermédiaire d'assurance doit préciser les exigences et besoins du souscripteur potentiel, ainsi que les raisons qui motivent le conseil fourni. L'assureur doit conseiller l'assuré en tenant compte de sa situation personnelle. Ce devoir de conseil implique que l'assureur propose des garanties adaptées aux besoins réels de l'assuré et non simplement les produits les plus rentables pour lui. En cas de manquement à ce devoir, l'assureur peut être tenu responsable des préjudices subis par l'assuré du fait de garanties inadaptées ou insuffisantes. Le devoir de conseil persiste tout au long de la relation contractuelle.
+
+Article L113-1 - Conditions et exclusions de garantie
+-----------------------------------------------------------------------
+Les pertes et les dommages occasionnés par des cas fortuits ou causés par la faute de l'assuré sont à la charge de l'assureur, sauf exclusion formelle et limitée contenue dans la police. Toutefois, l'assureur ne répond pas des pertes et dommages provenant d'une faute intentionnelle ou dolosive de l'assuré. Les exclusions de garantie doivent être formelles et limitées : elles ne peuvent pas être rédigées de manière vague ou extensive. Une exclusion trop générale ou imprécise sera inopposable à l'assuré. Pour être valable, une exclusion doit être rédigée clairement, figurer dans la police et être portée à la connaissance de l'assuré avant la conclusion du contrat.
 
 Article L113-2 - Obligations de déclaration de l'assuré
 -----------------------------------------------------------------------
 L'assuré est obligé :
 1° De répondre exactement aux questions posées par l'assureur, notamment dans le formulaire de déclaration du risque par lequel l'assureur l'interroge lors de la conclusion du contrat, sur les circonstances qui sont de nature à faire apprécier par l'assureur les risques qu'il prend en charge.
-2° De déclarer, en cours de contrat, les circonstances nouvelles qui ont pour conséquence soit d'aggraver les risques, soit d'en créer de nouveaux et rendent de ce fait inexactes ou caduques les réponses faites à l'assureur lors de la conclusion du contrat.
-L'assuré doit, par lettre recommandée, déclarer ces circonstances à l'assureur dans un délai de quinze jours à partir du moment où il en a eu connaissance.
+2° De déclarer, en cours de contrat, les circonstances nouvelles qui ont pour conséquence soit d'aggraver les risques, soit d'en créer de nouveaux et rendent de ce fait inexactes ou caduques les réponses faites à l'assureur lors de la conclusion du contrat. L'assuré doit, par lettre recommandée, déclarer ces circonstances à l'assureur dans un délai de quinze jours à partir du moment où il en a eu connaissance.
 3° De donner avis à l'assureur, dès qu'il en a eu connaissance et au plus tard dans le délai fixé par le contrat, de tout sinistre de nature à entraîner la garantie de l'assureur. Ce délai ne peut être inférieur à cinq jours ouvrés pour les sinistres autres que ceux relevant des branches mentionnées à l'article L. 111-6.
+Le non-respect de ces obligations peut entraîner la déchéance du droit à indemnisation ou une réduction de l'indemnité.
+
+Article L113-3 - Paiement de la prime et résiliation pour non-paiement
+-----------------------------------------------------------------------
+À défaut de paiement d'une prime, ou d'une fraction de prime, dans les dix jours de son échéance, et indépendamment du droit pour l'assureur de poursuivre l'exécution du contrat en justice, la garantie ne peut être suspendue que trente jours après la mise en demeure de l'assuré. Au cas où la prime annuelle a été fractionnée, la suspension de la garantie, intervenue en cas de non-paiement d'une des fractions de prime, produit ses effets jusqu'à l'expiration de la période annuelle considérée. L'assureur a le droit de résilier le contrat dix jours après l'expiration du délai de trente jours mentionné ci-dessus. La résiliation pour non-paiement ne peut intervenir qu'après mise en demeure et respect des délais légaux. L'assuré peut régulariser sa situation en payant la prime due avant l'expiration de ces délais.
+
+Article L113-4 - Aggravation du risque en cours de contrat
+-----------------------------------------------------------------------
+En cas d'aggravation du risque en cours de contrat, l'assureur qui en a été dûment informé peut dénoncer le contrat ou proposer un nouveau montant de prime. Si l'assuré refuse la nouvelle prime, l'assureur peut résilier le contrat. Si l'assureur n'a pas été informé de l'aggravation, il peut, en cas de sinistre, réduire l'indemnité dans la proportion du taux des primes payées par rapport au taux des primes qui auraient été dues si les risques avaient été complètement et exactement déclarés. L'aggravation du risque peut résulter d'un changement dans la situation personnelle de l'assuré, l'usage des biens assurés, ou les caractéristiques de l'objet assuré.
+
+Article L113-5 - Diminution du risque en cours de contrat
+-----------------------------------------------------------------------
+En cours de contrat, l'assureur doit, si l'assuré lui en fait la demande, diminuer le montant de la prime en cas de diminution du risque. Si l'assureur refuse, l'assuré peut résilier le contrat. La diminution du risque peut résulter de la disparition de certains éléments aggravants initialement déclarés, de l'amélioration des mesures de sécurité, ou du changement d'usage d'un bien. L'assuré doit apporter la preuve de la diminution du risque. Ce droit à réduction de prime protège l'assuré contre le paiement de cotisations disproportionnées au regard du risque réellement couvert.
 
 Article L113-8 - Nullité pour fausse déclaration intentionnelle
 -----------------------------------------------------------------------
-Indépendamment des causes ordinaires de nullité, et sous réserve des dispositions de l'article L. 132-26, le contrat d'assurance est nul en cas de réticence ou de fausse déclaration intentionnelle de la part de l'assuré, quand cette réticence ou cette fausse déclaration change l'objet du risque ou en diminue l'opinion pour l'assureur, alors même que le risque omis ou dénaturé par l'assuré a été sans influence sur le sinistre. Les primes payées demeurent alors acquises à l'assureur, qui a droit au paiement de toutes les primes échues à titre de dommages et intérêts. Cette nullité peut être invoquée même après un sinistre.
+Indépendamment des causes ordinaires de nullité, et sous réserve des dispositions de l'article L. 132-26, le contrat d'assurance est nul en cas de réticence ou de fausse déclaration intentionnelle de la part de l'assuré, quand cette réticence ou cette fausse déclaration change l'objet du risque ou en diminue l'opinion pour l'assureur, alors même que le risque omis ou dénaturé par l'assuré a été sans influence sur le sinistre. Les primes payées demeurent alors acquises à l'assureur, qui a droit au paiement de toutes les primes échues à titre de dommages et intérêts. Cette nullité peut être invoquée même après un sinistre. La mauvaise foi de l'assuré doit être prouvée par l'assureur.
 
-Article L113-9 - Omission ou déclaration inexacte non intentionnelle
+Article L113-9 - Réduction d'indemnité pour omission ou déclaration inexacte non intentionnelle
 -----------------------------------------------------------------------
-L'omission ou la déclaration inexacte de la part de l'assuré dont la mauvaise foi n'est pas établie n'entraîne pas la nullité de l'assurance. Si elle est constatée avant tout sinistre, l'assureur a le droit soit de maintenir le contrat, moyennant une augmentation de prime acceptée par l'assuré, soit de résilier le contrat dix jours après notification adressée à l'assuré par lettre recommandée. En cas de sinistre, l'omission ou la déclaration inexacte de bonne foi de l'assuré entraîne une réduction de l'indemnité en proportion du taux des primes payées par rapport au taux des primes qui auraient été dues si les risques avaient été complètement et exactement déclarés.
-
-Article L121-1 - Principe indemnitaire
------------------------------------------------------------------------
-L'assurance relative aux biens est un contrat d'indemnité ; l'indemnité due par l'assureur à l'assuré ne peut pas dépasser le montant de la valeur de la chose assurée au moment du sinistre. Il peut être stipulé que l'assuré reste obligatoirement son propre assureur pour une somme ou une quotité déterminée, ou qu'il supporte une déduction fixe. Le principe indemnitaire interdit l'enrichissement de l'assuré : celui-ci ne peut pas percevoir plus que la valeur réelle du bien endommagé ou détruit. L'assurance ne doit pas être une source de profit pour l'assuré.
-
-Article L113-3 - Résiliation pour non-paiement de prime
------------------------------------------------------------------------
-À défaut de paiement d'une prime, ou d'une fraction de prime, dans les dix jours de son échéance, et indépendamment du droit pour l'assureur de poursuivre l'exécution du contrat en justice, la garantie ne peut être suspendue que trente jours après la mise en demeure de l'assuré. Au cas où la prime annuelle a été fractionnée, la suspension de la garantie, intervenue en cas de non-paiement d'une des fractions de prime, produit ses effets jusqu'à l'expiration de la période annuelle considérée. L'assureur a le droit de résilier le contrat dix jours après l'expiration du délai de trente jours.
+L'omission ou la déclaration inexacte de la part de l'assuré dont la mauvaise foi n'est pas établie n'entraîne pas la nullité de l'assurance. Si elle est constatée avant tout sinistre, l'assureur a le droit soit de maintenir le contrat, moyennant une augmentation de prime acceptée par l'assuré, soit de résilier le contrat dix jours après notification adressée à l'assuré par lettre recommandée, en restituant la portion de prime payée pour le temps où l'assurance ne court plus. En cas de sinistre, l'omission ou la déclaration inexacte de bonne foi de l'assuré entraîne une réduction de l'indemnité en proportion du taux des primes payées par rapport au taux des primes qui auraient été dues si les risques avaient été complètement et exactement déclarés. La règle proportionnelle s'applique ainsi : si l'assuré a payé 80 % de la prime qu'il aurait dû payer, il reçoit 80 % de l'indemnité.
 
 Article L113-12 - Droit de résiliation annuelle
 -----------------------------------------------------------------------
-L'assuré a le droit de résilier le contrat à l'expiration d'un délai d'un an, en envoyant une lettre recommandée à l'assureur au moins deux mois avant la date d'échéance. Ce droit appartient dans les mêmes conditions à l'assureur. Le droit de résiliation annuelle constitue une protection fondamentale de l'assuré qui lui permet de ne pas être piégé indéfiniment dans un contrat qui ne lui convient plus ou dont les tarifs ont augmenté.
+L'assuré a le droit de résilier le contrat à l'expiration d'un délai d'un an, en envoyant une lettre recommandée à l'assureur au moins deux mois avant la date d'échéance. Ce droit appartient dans les mêmes conditions à l'assureur. Le droit de résiliation annuelle constitue une protection fondamentale de l'assuré qui lui permet de ne pas être piégé indéfiniment dans un contrat qui ne lui convient plus ou dont les tarifs ont augmenté. Toute clause contraire est réputée non écrite. L'assureur doit informer l'assuré de son droit à résiliation avec chaque avis d'échéance.
 
-Article L122-1 - Exclusions générales
+Article L113-12-2 - Résiliation infra-annuelle après un an
 -----------------------------------------------------------------------
-Sont exclues des contrats d'assurance de dommages les garanties relatives à des dommages causés intentionnellement par l'assuré. Cette exclusion est d'ordre public : aucune clause contractuelle ne peut y déroger. L'assurance ne peut pas couvrir les actes délibérément commis par l'assuré dans l'intention de provoquer le sinistre.
+Pour les contrats d'assurance couvrant les personnes physiques en dehors de leurs activités professionnelles, à l'exception des contrats d'assurance sur la vie, l'assuré peut, après un délai d'un an à compter de la première souscription, résilier le contrat sans frais ni pénalités. La résiliation prend effet un mois après que l'assureur en a reçu notification. L'assureur doit rembourser à l'assuré la partie de prime ou cotisation correspondant à la période pendant laquelle le risque n'a pas couru. Cette loi, dite "loi Hamon", facilite la mobilité des assurés et favorise la concurrence entre assureurs. Elle s'applique notamment aux assurances habitation, automobile et affinitaires.
+
+Article L113-15-2 - Résiliation pour changement de situation
+-----------------------------------------------------------------------
+L'assuré peut résilier le contrat en cas de changement de situation personnelle ou professionnelle lorsque ce changement a pour conséquence de modifier le risque initialement assuré. Les changements concernés incluent notamment : changement de domicile, de situation matrimoniale, de régime matrimonial, de profession, de retraite, de cessation d'activité professionnelle. La résiliation doit être demandée dans les trois mois suivant la date de l'événement qui la motive. Elle prend effet un mois après la notification à l'assureur. L'assureur doit rembourser la prime correspondant à la période non couverte. Ce droit de résiliation vise à adapter la couverture d'assurance aux évolutions de la vie de l'assuré.
+
+Article L113-16 - Résiliation après sinistre
+-----------------------------------------------------------------------
+En cas de sinistre, l'assureur peut résilier le contrat dans les conditions prévues par celui-ci. Réciproquement, l'assuré peut résilier le contrat après un sinistre. La résiliation doit être notifiée à l'autre partie dans un certain délai suivant le sinistre, généralement prévu par le contrat. L'assureur ne peut utiliser la résiliation après sinistre de manière abusive. La résiliation prend effet généralement un mois après la notification. L'assureur est tenu de rembourser la fraction de prime non utilisée. Certains contrats, notamment en assurance habitation, prévoient la résiliation automatique après plusieurs sinistres successifs.
+
+Article L114-1 - Prescription biennale
+-----------------------------------------------------------------------
+Toutes actions dérivant d'un contrat d'assurance sont prescrites par deux ans à compter de l'événement qui y donne naissance. Ce délai court à compter du jour de l'événement qui donne naissance à l'action en cas d'action en paiement de prime, à compter du sinistre en cas d'action en garantie, à compter du jour où les intéressés ont eu connaissance du cas fortuit en cas d'action par la victime. La prescription biennale est d'ordre public : les parties ne peuvent pas la modifier par contrat. Ce délai court contre les mineurs et les majeurs en tutelle, mais il ne court pas contre les incapables majeurs non pourvus d'un représentant légal. L'assuré dispose donc de deux ans pour agir en cas de litige avec son assureur.
+
+Article L114-2 - Interruption de la prescription
+-----------------------------------------------------------------------
+La prescription est interrompue par une des causes ordinaires d'interruption de la prescription et par la désignation d'experts à la suite d'un sinistre. L'interruption de la prescription de l'action peut, en outre, résulter de l'envoi d'une lettre recommandée ou d'un envoi recommandé électronique avec accusé de réception adressés par l'assureur à l'assuré en ce qui concerne l'action en paiement de la prime et par l'assuré à l'assureur en ce qui concerne le règlement de l'indemnité. L'envoi d'une lettre recommandée ou d'un recours amiable interrompt ainsi le délai de prescription, permettant à l'assuré de conserver ses droits plus longtemps en cas de litige avec son assureur.
+
+Article L121-1 - Principe indemnitaire
+-----------------------------------------------------------------------
+L'assurance relative aux biens est un contrat d'indemnité ; l'indemnité due par l'assureur à l'assuré ne peut pas dépasser le montant de la valeur de la chose assurée au moment du sinistre. Il peut être stipulé que l'assuré reste obligatoirement son propre assureur pour une somme ou une quotité déterminée, ou qu'il supporte une déduction fixe. Le principe indemnitaire interdit l'enrichissement de l'assuré : celui-ci ne peut pas percevoir plus que la valeur réelle du bien endommagé ou détruit. L'assurance ne doit pas être une source de profit pour l'assuré. En cas de sinistre total, l'indemnité versée correspond à la valeur vénale du bien au jour du sinistre, sauf convention contraire (valeur à neuf par exemple).
+
+Article L121-2 - Valeur de la chose assurée
+-----------------------------------------------------------------------
+Lorsque la chose assurée est estimée dans le contrat, l'estimation fait foi entre les parties, sauf le cas de fraude ou de dol de l'assuré. Lorsqu'il n'y a pas de stipulation sur la valeur, l'assureur est tenu de payer la valeur de la chose assurée au moment du sinistre. L'assuré doit veiller à ce que la valeur déclarée dans son contrat correspond à la valeur réelle de ses biens. Une sous-assurance (valeur déclarée inférieure à la valeur réelle) peut entraîner l'application de la règle proportionnelle : l'assureur ne verse qu'une fraction de l'indemnité proportionnelle au rapport entre la valeur assurée et la valeur réelle.
+
+Article L121-6 - Interdiction du délaissement
+-----------------------------------------------------------------------
+L'assuré ne peut pas abandonner à l'assureur les objets assurés, sauf clause contraire insérée dans la police. Le délaissement, qui consiste à laisser à l'assureur la propriété de la chose sinistrée en échange du versement de la valeur totale, n'est autorisé que si le contrat le prévoit expressément. Ce principe vise à éviter que l'assuré ne cherche à s'enrichir en abandonnant des biens partiellement endommagés à l'assureur tout en réclamant leur valeur totale. En pratique, lors d'un sinistre partiel, l'assureur indemnise les dommages mais conserve à l'assuré la propriété du bien sinistré.
+
+Article L121-10 - Assurance pour compte
+-----------------------------------------------------------------------
+L'assurance peut être contractée pour le compte de qui il appartiendra. La clause vaut, à la fois, comme assurance au profit du souscripteur du contrat et comme stipulation pour autrui au profit du bénéficiaire connu ou éventuel de la clause. Celui qui a souscrit une assurance pour le compte de qui il appartiendra est réputé avoir agi pour son propre compte si des clauses particulières du contrat ne s'y opposent pas. L'assurance pour compte est fréquemment utilisée en copropriété, où le syndic souscrit une assurance pour le compte de tous les copropriétaires, ou en location immobilière où certains contrats couvrent à la fois le propriétaire et le locataire.
+
+Article L122-1 - Franchise
+-----------------------------------------------------------------------
+La franchise est la somme qui reste à la charge de l'assuré en cas de sinistre. Elle représente la part des dommages que l'assureur ne prend pas en charge. La franchise peut être absolue (l'assureur n'intervient que si le sinistre dépasse le montant de la franchise) ou relative (l'assureur prend en charge l'intégralité du sinistre si celui-ci dépasse la franchise, ou rien s'il est inférieur). La franchise peut être exprimée en valeur absolue ou en pourcentage. Une franchise élevée réduit le montant de la prime mais expose l'assuré à des restes à charge importants. L'assuré doit vérifier le montant des franchises applicables à chaque garantie avant de souscrire.
+
+Article L122-2 - Plafond de garantie
+-----------------------------------------------------------------------
+Le contrat d'assurance peut prévoir un plafond de garantie, c'est-à-dire un montant maximum que l'assureur s'engage à verser en cas de sinistre. Au-delà de ce plafond, les dommages restent à la charge de l'assuré. Les plafonds de garantie peuvent être fixés par sinistre, par année, ou par type de dommage. L'assuré doit s'assurer que les plafonds prévus dans son contrat sont suffisants pour couvrir les risques réels auxquels il est exposé. Des plafonds de garantie trop bas peuvent laisser l'assuré sans couverture suffisante en cas de sinistre majeur. Il est conseillé de vérifier et actualiser régulièrement les plafonds en fonction de l'évolution des valeurs assurées.
+
+Article L124-1 - Assurance de responsabilité civile
+-----------------------------------------------------------------------
+Dans les assurances de responsabilité, l'assureur n'est tenu qu'envers l'assuré. L'assurance de responsabilité garantit l'assuré contre les conséquences pécuniaires des réclamations des tiers auxquels il a causé des dommages. L'assureur prend en charge les indemnités que l'assuré est légalement tenu de payer à la victime ainsi que les frais de défense. L'assurance de responsabilité civile est obligatoire pour certaines activités (automobile, chasse, sports collectifs). Elle protège le patrimoine de l'assuré en cas de mise en cause de sa responsabilité.
+
+Article L124-3 - Action directe du tiers lésé
+-----------------------------------------------------------------------
+Le tiers lésé dispose d'un droit d'action directe à l'encontre de l'assureur. L'assureur peut opposer au tiers lésé les exceptions opposables à l'assuré à la date du sinistre, mais non les exceptions nées postérieurement à ce sinistre. Cette action directe permet à la victime d'un dommage causé par l'assuré d'agir directement contre l'assureur pour obtenir réparation, sans avoir besoin de passer par l'assuré. Le tiers peut ainsi obtenir l'indemnisation directement de l'assureur, même si l'assuré est insolvable ou de mauvaise foi. Ce droit d'action directe constitue une protection essentielle pour les victimes.
+
+Article L125-1 - Garantie catastrophes naturelles
+-----------------------------------------------------------------------
+Les contrats d'assurance, souscrits par toute personne physique ou morale autre que l'État, garantissant les dommages aux biens situés en France, ainsi que les dommages aux corps de véhicules terrestres à moteur, ouvrent droit à la garantie de l'assuré contre les effets des catastrophes naturelles sur les biens faisant l'objet de tels contrats. Est considéré comme l'effet d'une catastrophe naturelle, au sens du présent chapitre, l'intensité anormale d'un agent naturel lorsque les mesures habituelles à prendre pour prévenir ces dommages n'ont pu empêcher leur survenance ou n'ont pu être prises. La garantie est obligatoire et automatiquement incluse dans tous les contrats multirisques habitation et automobile.
+
+Article L125-2 - Mise en jeu de la garantie catastrophes naturelles
+-----------------------------------------------------------------------
+La garantie contre les effets des catastrophes naturelles est mise en œuvre par un arrêté interministériel constatant l'état de catastrophe naturelle. Cet arrêté détermine les zones et les périodes où s'est située la catastrophe ainsi que la nature des dommages couverts. La franchise applicable aux catastrophes naturelles est fixée par décret. En cas de retenue pour sous-assurance, l'indemnité peut être réduite proportionnellement. L'assuré doit déclarer le sinistre dans les dix jours suivant la publication de l'arrêté interministériel. L'assureur dispose de trois mois à compter de la date de remise de l'état estimatif des pertes pour verser l'indemnité.
+
+Article L132-1 - Clauses abusives dans les contrats d'assurance
+-----------------------------------------------------------------------
+Dans les contrats entre professionnels et non-professionnels ou consommateurs, sont abusives les clauses qui ont pour objet ou pour effet de créer, au détriment du non-professionnel ou du consommateur, un déséquilibre significatif entre les droits et obligations des parties au contrat. Les clauses abusives sont réputées non écrites. Dans les contrats d'assurance, constituent notamment des clauses abusives : les clauses qui permettent à l'assureur de modifier unilatéralement les conditions du contrat sans justification légitime, les clauses qui excluent ou limitent abusivement la responsabilité de l'assureur, les clauses imposant des délais de déclaration de sinistre excessivement courts. La liste des clauses abusives est régulièrement mise à jour par la Commission des clauses abusives.
+
+Article L211-1 - Obligation d'assurance responsabilité civile automobile
+-----------------------------------------------------------------------
+Toute personne physique ou toute personne morale autre que l'État, dont la responsabilité civile peut être engagée en raison de dommages subis par des tiers résultant d'atteintes aux personnes ou aux biens dans la réalisation desquels un véhicule terrestre à moteur, ainsi que ses remorques ou semi-remorques, est impliqué, doit, pour faire circuler lesdits véhicules, être couverte par une assurance garantissant cette responsabilité. L'obligation d'assurance automobile est d'ordre public : il est interdit de circuler sans assurance. L'absence d'assurance est une infraction pénale. Le Fonds de Garantie des Assurances Obligatoires de Dommages (FGAO) indemnise les victimes d'accidents causés par des conducteurs non assurés.
 
 =========================================================================
-FIN DES EXTRAITS — Code des Assurances (version Legalia test)
+FIN DES EXTRAITS — Code des Assurances (version complète Legalia)
 =========================================================================

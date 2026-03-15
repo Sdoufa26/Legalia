@@ -37,18 +37,18 @@ export interface UserResponse {
 export class AuthService {
 
   private readonly API = 'http://localhost:8080/api/auth';
+  private readonly TOKEN_KEY = 'legalia_token';
 
-  // Stockage en mémoire (PAS de localStorage) — le token est perdu au refresh
-  private accessToken: string | null = null;
+  // Le token est lu depuis sessionStorage au démarrage du service
   private cachedUser: UserResponse | null = null;
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  /** Authentifie l'utilisateur et stocke le JWT en mémoire */
+  /** Authentifie l'utilisateur et stocke le JWT dans sessionStorage */
   login(request: LoginRequest): Observable<TokenResponse> {
     return this.http.post<TokenResponse>(`${this.API}/login`, request).pipe(
       tap(response => {
-        this.accessToken = response.access_token;
+        sessionStorage.setItem(this.TOKEN_KEY, response.access_token);
       })
     );
   }
@@ -79,9 +79,9 @@ export class AuthService {
     return this.http.put<{ message: string }>(`${this.API}/password`, { currentPassword, newPassword });
   }
 
-  /** Retourne le token JWT courant (ou null) */
+  /** Retourne le token JWT depuis sessionStorage (ou null) */
   getToken(): string | null {
-    return this.accessToken;
+    return sessionStorage.getItem(this.TOKEN_KEY);
   }
 
   /** Retourne l'utilisateur mis en cache (sans appel réseau) */
@@ -89,9 +89,9 @@ export class AuthService {
     return this.cachedUser;
   }
 
-  /** Vérifie si un token existe et n'est pas expiré */
+  /** Vérifie si le token dans sessionStorage existe et n'est pas expiré */
   isAuthenticated(): boolean {
-    const token = this.accessToken;
+    const token = sessionStorage.getItem(this.TOKEN_KEY);
     if (!token) return false;
 
     try {
@@ -110,9 +110,9 @@ export class AuthService {
     return this.isAuthenticated();
   }
 
-  /** Déconnecte l'utilisateur et redirige vers la page de login */
+  /** Déconnecte l'utilisateur, supprime le token de sessionStorage et redirige */
   logout(): void {
-    this.accessToken = null;
+    sessionStorage.removeItem(this.TOKEN_KEY);
     this.cachedUser = null;
     this.router.navigate(['/auth/login']);
   }

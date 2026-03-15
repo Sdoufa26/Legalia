@@ -45,6 +45,21 @@ public class Document {
     @Builder.Default
     private StatutDocument statut = StatutDocument.EN_COURS;
 
+    // Progression de l'analyse en pourcentage (0 à 100)
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer progression = 0;
+
+    // Nombre de clauses déjà sauvegardées en BDD
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer clausesAnalysees = 0;
+
+    // Nombre total de clauses retournées par le service IA
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer totalClauses = 0;
+
     // --- ENUMS ---
 
     public enum CategorieDocument {

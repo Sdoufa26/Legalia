@@ -35,3 +35,12 @@ class HealthResponse(BaseModel):
     status: str
     service: str
     knowledge_base_loaded: bool
+
+
+class ProgressionResponse(BaseModel):
+    """Progression en temps réel de l'analyse d'un document.
+    Les noms de champs correspondent aux @JsonProperty du DTO Spring (AnalysisProgressResponse).
+    """
+    total_clauses: int
+    clauses_analysees: int
+    progression: int  # pourcentage 0-100

@@ -1,6 +1,7 @@
 package com.legalia.backend.service;
 
 import com.legalia.backend.dto.AIAnalysisResponse;
+import com.legalia.backend.dto.AnalysisProgressResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriUtils;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * Client HTTP vers le service IA FastAPI (port 8000).
@@ -69,6 +73,25 @@ public class AIServiceClient {
         } catch (RestClientException e) {
             log.error("Erreur HTTP lors de l'appel au service IA pour '{}' : {}", filename, e.getMessage());
             throw new AIServiceException("Erreur lors de l'appel au service IA : " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Interroge le service IA pour obtenir la progression de l'analyse en cours.
+     * Retourne null si l'endpoint est indisponible ou si le fichier n'est pas en cours d'analyse.
+     *
+     * @param filename le nom du fichier dont on veut la progression
+     * @return la progression, ou null en cas d'erreur
+     */
+    public AnalysisProgressResponse getAnalysisProgress(String filename) {
+        String encodedFilename = UriUtils.encodePath(filename, StandardCharsets.UTF_8);
+        String endpoint = aiServiceUrl + "/api/analyze/progress/" + encodedFilename;
+        try {
+            return restTemplate.getForObject(endpoint, AnalysisProgressResponse.class);
+        } catch (Exception e) {
+            // Endpoint de progression optionnel — on ne bloque pas en cas d'erreur
+            log.debug("Progression indisponible pour '{}' : {}", filename, e.getMessage());
+            return null;
         }
     }
 
