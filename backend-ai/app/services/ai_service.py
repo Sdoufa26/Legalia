@@ -47,6 +47,50 @@ def get_modele_actif() -> str:
     return _modele_actif
 
 
+def _analyser_prompt_simplifie(
+    client: genai.Client,
+    modele: str,
+    titre: str,
+    contenu: str,
+) -> dict | None:
+    """
+    Analyse une clause avec un prompt simplifié en cas d'échec du prompt principal.
+    Utilisé comme filet de sécurité quand Gemini ne renvoie pas un JSON valide.
+
+    Returns:
+        Dict partiel {texte_clair, niveau_vigilance, source_juridique} ou None si échec.
+    """
+    # Contenu encore plus court pour maximiser les chances d'obtenir une réponse valide
+    contenu_court = contenu[:1000]
+    prompt_simple = (
+        f"Explique simplement en français cette clause de contrat d'assurance : {contenu_court}. "
+        f'Réponds en JSON : {{"texte_clair": "...", "niveau_vigilance": "FAIBLE ou MOYEN ou ELEVE", "source_juridique": "Non applicable"}}'
+    )
+    try:
+        reponse = client.models.generate_content(model=modele, contents=prompt_simple)
+        if not reponse.text:
+            return None
+        texte = reponse.text.strip()
+        texte = re.sub(r"^```(?:json)?\s*", "", texte)
+        texte = re.sub(r"\s*```$", "", texte)
+        donnees = json.loads(texte)
+        if isinstance(donnees, list):
+            donnees = donnees[0] if donnees else {}
+        if not isinstance(donnees, dict):
+            return None
+        niveau = donnees.get("niveau_vigilance", "MOYEN").upper()
+        if niveau not in ("FAIBLE", "MOYEN", "ELEVE"):
+            niveau = "MOYEN"
+        return {
+            "texte_clair": donnees.get("texte_clair", "Analyse non disponible."),
+            "niveau_vigilance": niveau,
+            "source_juridique": donnees.get("source_juridique", "Non applicable"),
+        }
+    except Exception as e:
+        logger.debug(f"Prompt simplifié échoué pour '{titre[:50]}' : {e}")
+        return None
+
+
 def _construire_prompt(
     clause_titre: str,
     clause_contenu: str,
@@ -63,6 +107,12 @@ def _construire_prompt(
     Returns:
         Prompt formaté en français, orienté vulgarisation et accessibilité.
     """
+    # Limite le contenu à 3000 caractères pour éviter les timeouts Gemini sur les clauses très longues
+    MAX_CONTENU = 3000
+    if len(clause_contenu) > MAX_CONTENU:
+        logger.warning(f"Clause '{clause_titre[:50]}' tronquée ({len(clause_contenu)} → {MAX_CONTENU} chars)")
+        clause_contenu = clause_contenu[:MAX_CONTENU] + "... [contenu tronqué]"
+
     articles_formates = "\n\n---\n\n".join(articles_pertinents) if articles_pertinents else "Aucun article pertinent trouvé."
 
     prompt = f"""Tu es un expert juridique spécialisé en droit des assurances français. Tu travailles pour Legalia, une plateforme qui aide les particuliers à comprendre leurs contrats d'assurance.
@@ -125,6 +175,7 @@ RÈGLES STRICTES :
 - Ne mentionne JAMAIS "cette clause" ou "ce paragraphe", parle directement du contenu
 - Utilise le "vous" pour t'adresser à l'assuré
 - Donne des exemples concrets : "Par exemple, si un dégât des eaux survient chez vous..."
+- Si la clause est principalement une définition de termes du contrat (qui est l'assuré, qui est l'assureur, que signifie tel mot), classe-la en FAIBLE même si elle mentionne des exclusions en passant. Le niveau ELEVE est réservé aux clauses dont l'OBJET PRINCIPAL est une restriction, exclusion ou limitation.
 """
     return prompt
 
@@ -167,6 +218,10 @@ def analyze_clause(
                 model=modele,
                 contents=prompt,
             )
+            # Vérification que la réponse n'est pas vide
+            if not reponse.text:
+                raise ValueError("Réponse Gemini vide (aucun texte retourné)")
+
             texte_reponse = reponse.text.strip()
 
             # Nettoyage des balises markdown éventuelles (```json ... ```)
@@ -174,6 +229,15 @@ def analyze_clause(
             texte_reponse = re.sub(r"\s*```$", "", texte_reponse)
 
             donnees = json.loads(texte_reponse)
+
+            # Si Gemini retourne une liste au lieu d'un objet, on prend le premier élément
+            if isinstance(donnees, list):
+                logger.warning(f"Réponse Gemini sous forme de liste pour '{clause_titre}' — extraction du premier élément")
+                donnees = donnees[0] if donnees else {}
+
+            # Vérification que donnees est bien un dict
+            if not isinstance(donnees, dict):
+                raise json.JSONDecodeError("La réponse JSON n'est pas un objet", texte_reponse, 0)
 
             # Validation et valeurs par défaut
             niveau = donnees.get("niveau_vigilance", "MOYEN").upper()
@@ -189,12 +253,22 @@ def analyze_clause(
             }
 
         except json.JSONDecodeError as e:
-            # Réponse non parseable : retour dégradé immédiat, pas de retry
-            logger.error(f"Réponse Gemini non parseable pour '{clause_titre}' : {e}")
+            # Réponse non parseable : tentative avec prompt simplifié avant d'abandonner
+            logger.warning(f"Réponse Gemini non parseable pour '{clause_titre}' — tentative prompt simplifié")
+            resultat_simple = _analyser_prompt_simplifie(client, modele, clause_titre, clause_contenu)
+            if resultat_simple:
+                logger.info(f"Prompt simplifié réussi pour '{clause_titre[:50]}'")
+                return {
+                    "titre_clause": clause_titre,
+                    "texte_original": clause_contenu,
+                    **resultat_simple,
+                }
+            # Prompt simplifié aussi en échec : retour dégradé
+            logger.error(f"Echec définitif pour '{clause_titre}' : {e}")
             return {
                 "titre_clause": clause_titre,
                 "texte_original": clause_contenu,
-                "texte_clair": "L'analyse automatique a échoué. Veuillez consulter un juriste.",
+                "texte_clair": "Cette clause nécessite une lecture attentive. Nous vous conseillons de la faire examiner par un professionnel.",
                 "niveau_vigilance": "MOYEN",
                 "source_juridique": "Non applicable",
             }
@@ -268,14 +342,35 @@ def analyze_contract(
         query_rag = f"{titre} {contenu[:200]}"
         articles_pertinents = rag_service.search_relevant_chunks(query_rag, top_k=3)
 
-        # Étape IA : vulgarisation par Gemini avec gestion du fallback
+        # Étape IA : vulgarisation par Gemini avec gestion du fallback et des erreurs par clause
         try:
             resultat = analyze_clause(titre, contenu, articles_pertinents, _modele_actif)
         except FallbackRequis:
             # Bascule définitive sur le modèle fallback pour la suite du document
             _modele_actif = MODELE_FALLBACK
             logger.warning(f"Fallback sur {MODELE_FALLBACK} pour la suite du document")
-            resultat = analyze_clause(titre, contenu, articles_pertinents, _modele_actif)
+            try:
+                resultat = analyze_clause(titre, contenu, articles_pertinents, _modele_actif)
+            except RuntimeError as e:
+                # Erreur même sur le fallback : clause ignorée, on continue
+                logger.error(f"Clause {i}/{total} ignorée après échec du fallback : {e}")
+                resultat = {
+                    "titre_clause": titre,
+                    "texte_original": contenu,
+                    "texte_clair": "Cette clause n'a pas pu être analysée automatiquement.",
+                    "niveau_vigilance": "MOYEN",
+                    "source_juridique": "Non applicable",
+                }
+        except RuntimeError as e:
+            # Erreur Gemini inattendue (ex: 500 interne) : clause ignorée, analyse continue
+            logger.error(f"Clause {i}/{total} ignorée suite à une erreur Gemini : {e}")
+            resultat = {
+                "titre_clause": titre,
+                "texte_original": contenu,
+                "texte_clair": "Cette clause n'a pas pu être analysée automatiquement.",
+                "niveau_vigilance": "MOYEN",
+                "source_juridique": "Non applicable",
+            }
 
         resultats.append(resultat)
 

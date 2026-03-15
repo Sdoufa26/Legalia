@@ -97,6 +97,66 @@ def _extraire_prefixe_numerique(titre: str) -> str:
     return match.group(1) if match else ""
 
 
+def _est_definition_glossaire(titre: str, contenu: str) -> bool:
+    """
+    Détecte si une clause est une définition de glossaire.
+
+    Critères :
+    - Titre qui évoque explicitement un glossaire / une définition
+    - OU titre en majuscules seul + contenu court (< 600 chars)
+    - OU contenu qui suit le pattern "TERME : définition" ou "TERME signifie..."
+    """
+    # Titre qui suggère directement un glossaire
+    patterns_titre = [
+        r"^DÉFINITIONS?$",
+        r"^GLOSSAIRE$",
+        r"^DÉFINITION\s+DE\b",
+        r"^TERMES?\s+ET\s+DÉFINITIONS?$",
+    ]
+    if any(re.match(p, titre.strip(), re.IGNORECASE) for p in patterns_titre):
+        return True
+
+    # Titre en majuscules court (mot isolé) + contenu court → terme de glossaire
+    titre_majuscules_court = (
+        re.match(r"^[A-ZÀÂÉÈÊËÎÏÔÙÛÜÇ][A-ZÀÂÉÈÊËÎÏÔÙÛÜÇ\s\-]{1,40}$", titre.strip())
+        and len(contenu) < 600
+    )
+    # Pattern "TERME : définition" dans le contenu
+    contenu_format_definition = bool(
+        re.search(r"^[A-ZÀÂÉÈÊËÎÏÔÙÛÜÇ][A-ZÀÂÉÈÊËÎÏÔÙÛÜÇ\s\-]+\s*:", contenu, re.MULTILINE)
+    )
+
+    return titre_majuscules_court and contenu_format_definition
+
+
+def _regrouper_glossaire(clauses: list[dict]) -> list[dict]:
+    """
+    Regroupe toutes les définitions de glossaire détectées en une seule clause.
+    Les clauses non-glossaire sont conservées dans leur ordre d'origine.
+    """
+    definitions = []
+    autres = []
+
+    for clause in clauses:
+        if _est_definition_glossaire(clause["titre"], clause["contenu"]):
+            definitions.append(f"**{clause['titre']}**\n{clause['contenu']}")
+            logger.debug(f"Définition de glossaire détectée : '{clause['titre']}'")
+        else:
+            autres.append(clause)
+
+    if not definitions:
+        return clauses  # rien à regrouper
+
+    clause_glossaire = {
+        "titre": "Glossaire — Définitions clés du contrat",
+        "contenu": "\n\n".join(definitions),
+    }
+    logger.info(f"{len(definitions)} définitions regroupées en une clause glossaire")
+
+    # Le glossaire est inséré en tête pour préserver l'ordre logique
+    return [clause_glossaire] + autres
+
+
 def _fusionner_sous_clauses(clauses: list[dict]) -> list[dict]:
     """
     Fusionne les sous-clauses consécutives sous leur section parente.
@@ -222,6 +282,9 @@ def extract_clauses(text: str) -> list[dict]:
         clauses_filtrees.append(clause)
 
     logger.debug(f"{len(clauses_filtrees)} clauses après filtrage")
+
+    # --- Étape 3b : regroupement des définitions de glossaire ---
+    clauses_filtrees = _regrouper_glossaire(clauses_filtrees)
 
     # --- Étape 4 : fusion des sous-clauses ---
     clauses_fusionnees = _fusionner_sous_clauses(clauses_filtrees)
