@@ -6,11 +6,12 @@ import {
   DocumentUploadResponse,
   DocumentStatusResponse
 } from '../../services/document.service';
+import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, SidebarComponent],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css'
 })
