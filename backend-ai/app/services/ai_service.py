@@ -125,7 +125,7 @@ Titre : {clause_titre}
 Contenu : {clause_contenu}
 
 INSTRUCTIONS :
-1. Explique cette clause en langage simple et accessible, comme si tu parlais à quelqu'un qui n'a aucune formation juridique. Utilise des phrases courtes et des exemples concrets du quotidien.
+1. Explique cette clause en 4 phrases MAXIMUM avec des mots très simples que tout le monde peut comprendre (niveau collège). Pas de jargon juridique. Explique bien ce que ça veut dire concrètement pour l'assuré, comme si tu parlais à un ami.
 2. Évalue le niveau de vigilance selon les règles précises ci-dessous.
 3. Cite la source juridique la plus spécifique parmi celles fournies dans le contexte.
 
@@ -174,7 +174,8 @@ RÈGLES STRICTES :
 - Base-toi UNIQUEMENT sur les articles de loi fournis dans le contexte
 - Ne mentionne JAMAIS "cette clause" ou "ce paragraphe", parle directement du contenu
 - Utilise le "vous" pour t'adresser à l'assuré
-- Donne des exemples concrets : "Par exemple, si un dégât des eaux survient chez vous..."
+- SOIS BREF : 4 phrases maximum pour le texte_clair. Pas de longs paragraphes.
+- Utilise des mots du quotidien, comme si tu expliquais à un ami
 - Si la clause est principalement une définition de termes du contrat (qui est l'assuré, qui est l'assureur, que signifie tel mot), classe-la en FAIBLE même si elle mentionne des exclusions en passant. Le niveau ELEVE est réservé aux clauses dont l'OBJET PRINCIPAL est une restriction, exclusion ou limitation.
 """
     return prompt
