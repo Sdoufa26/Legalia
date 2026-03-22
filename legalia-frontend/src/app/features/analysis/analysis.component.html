@@ -6,7 +6,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
     </button>
     <div class="header-info">
-      <h1>Contract Analysis</h1>
+      <h1>Analyse du contrat</h1>
       <p *ngIf="document">{{ document.nomFichier }}</p>
     </div>
     <!-- Bouton Export PDF -->
@@ -43,7 +43,7 @@
 
     <!-- GAUCHE : Document contractuel complet -->
     <div class="panel panel-document">
-      <div class="panel-title">Contract Document</div>
+      <div class="panel-title">Document contractuel</div>
       <div class="panel-body">
         <div *ngFor="let clause of clauses" class="original-block">
           <h4>{{ clause.titreClause }}</h4>
@@ -54,7 +54,7 @@
 
     <!-- DROITE : Cartes de résultats IA -->
     <div class="panel panel-results">
-      <div class="panel-title">AI Analysis Results</div>
+      <div class="panel-title">Résultats de l'analyse IA</div>
       <div class="panel-body">
         <div
           *ngFor="let clause of clauses"

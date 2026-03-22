@@ -71,10 +71,10 @@ export class AnalysisComponent implements OnInit {
   /** Label du badge */
   getBadgeLabel(niveau: string): string {
     switch (niveau) {
-      case 'ELEVE':  return 'Alert';
-      case 'MOYEN':  return 'Risk';
-      case 'FAIBLE': return 'Opportunity';
-      default:       return 'Risk';
+      case 'ELEVE':  return 'Alerte';
+      case 'MOYEN':  return 'Risque';
+      case 'FAIBLE': return 'Opportunité';
+      default:       return 'Risque';
     }
   }
 
