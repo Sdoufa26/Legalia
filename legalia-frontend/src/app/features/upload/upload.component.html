@@ -135,6 +135,16 @@
         <h2>Analyse en cours…</h2>
         <p>Notre IA analyse les clauses de votre contrat</p>
 
+        <!-- Message : navigation possible pendant l'analyse -->
+        <p class="nav-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Vous pouvez naviguer librement, l'analyse continue en arrière-plan.
+        </p>
+
         <!-- Barre de progression temps réel -->
         <div class="progress-bar">
           <div class="progress-fill" [style.width.%]="analysisProgression"></div>

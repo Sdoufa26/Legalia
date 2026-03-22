@@ -1,0 +1,72 @@
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <app-sidebar></app-sidebar>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>Analyse en cours</h1>
+        <p>Suivi de l'analyse de votre document</p>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Analyse en cours -->
+      <div *ngIf="!erreur" class="analyzing-card">
+
+        <div class="spinner"></div>
+        <h2>Analyse en cours…</h2>
+        <p>Notre IA analyse les clauses de votre contrat</p>
+
+        <!-- Barre de progression temps réel -->
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progression"></div>
+        </div>
+
+        <!-- Texte d'avancement : X/Y clauses (Z%) -->
+        <span class="progress-text">
+          <ng-container *ngIf="totalClauses > 0">
+            {{ clausesAnalysees }}/{{ totalClauses }} clauses ({{ progression | number:'1.0-0' }}%)
+          </ng-container>
+          <ng-container *ngIf="totalClauses === 0">
+            {{ progression | number:'1.0-0' }}%
+          </ng-container>
+        </span>
+
+        <!-- Message indiquant que l'on peut naviguer -->
+        <p class="nav-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Vous pouvez naviguer librement, l'analyse continue en arrière-plan.
+        </p>
+
+        <div class="dots">
+          <span></span><span></span><span></span>
+        </div>
+
+      </div>
+
+      <!-- Erreur d'analyse -->
+      <div *ngIf="erreur" class="analyzing-card error-card">
+        <div class="error-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c62828" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h2>Analyse échouée</h2>
+        <p>{{ erreur }}</p>
+        <a routerLink="/documents" class="btn-retour">Retour aux documents</a>
+      </div>
+
+    </div>
+  </main>
+</div>

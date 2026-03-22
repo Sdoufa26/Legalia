@@ -329,6 +329,7 @@
 .btn-action.primary { background: #1a2e5a; color: #fff; }
 .btn-action.secondary { background: #f0f2f5; color: #1a2e5a; border: 1px solid #dde3ef; }
 .btn-action.danger { background: #fff0f0; color: #c62828; border: 1px solid #ffcdd2; }
+.btn-action.progress { background: #eef4fc; color: #2E75B6; border: 1px solid #b3d0ef; }
 
 /* ── ACTIONS CELL ── */
 .actions-cell {

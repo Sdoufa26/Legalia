@@ -309,6 +309,19 @@
   font-weight: 500;
 }
 
+/* ── MESSAGE DE NAVIGATION ── */
+.nav-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #2E75B6;
+  background: #eef4fc;
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-top: 4px;
+}
+
 /* ── CARTE ERREUR D'ANALYSE ── */
 .error-card h2 {
   color: #c62828;

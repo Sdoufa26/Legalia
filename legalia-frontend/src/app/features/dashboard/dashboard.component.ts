@@ -125,7 +125,7 @@ export class DashboardComponent implements OnInit {
   getActionLabel(statut: string): string {
     switch (statut) {
       case 'TERMINE':  return 'Voir l\'analyse';
-      case 'EN_COURS': return 'En cours…';
+      case 'EN_COURS': return 'Analyse en cours…';
       case 'ERREUR':   return 'Réessayer';
       default:         return 'Voir';
     }
@@ -135,16 +135,19 @@ export class DashboardComponent implements OnInit {
   getActionClass(statut: string): string {
     switch (statut) {
       case 'TERMINE':  return 'btn-action primary';
-      case 'EN_COURS': return 'btn-action secondary';
+      case 'EN_COURS': return 'btn-action progress';
       case 'ERREUR':   return 'btn-action danger';
       default:         return 'btn-action';
     }
   }
 
-  /** Action sur clic du bouton (ouvre l'analyse ou redirige vers upload) */
+  /** Action sur clic du bouton (ouvre l'analyse, la progression ou redirige vers upload) */
   onDocumentAction(doc: DocumentResponse): void {
     if (doc.statut === 'TERMINE') {
       this.router.navigate(['/analysis', doc.id]);
+    } else if (doc.statut === 'EN_COURS') {
+      // Redirige vers la page de suivi de progression
+      this.router.navigate(['/analysis', doc.id, 'progress']);
     } else if (doc.statut === 'ERREUR') {
       this.router.navigate(['/upload']);
     }
