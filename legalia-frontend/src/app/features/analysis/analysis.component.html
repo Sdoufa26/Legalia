@@ -1,82 +1,90 @@
-<div class="page">
+<div class="layout">
 
-  <!-- ── EN-TÊTE ── -->
-  <header class="page-header">
-    <button class="btn-back" routerLink="/dashboard">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-    </button>
-    <div class="header-info">
-      <h1>Analyse du contrat</h1>
-      <p *ngIf="document">{{ document.nomFichier }}</p>
-    </div>
-    <!-- Bouton Export PDF -->
-    <button
-      *ngIf="!loading && !errorMessage && clauses.length > 0"
-      class="btn-export-pdf"
-      (click)="exportPDF()"
-      [disabled]="exporting"
-    >
-      <svg *ngIf="!exporting" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      <div *ngIf="exporting" class="btn-spinner"></div>
-      {{ exporting ? 'Export en cours…' : 'Télécharger le rapport PDF' }}
-    </button>
-  </header>
+  <!-- ── SIDEBAR ── -->
+  <app-sidebar></app-sidebar>
 
-  <!-- Chargement -->
-  <div *ngIf="loading" class="loading-state">
-    <div class="spinner"></div>
-    <p>Chargement des résultats…</p>
-  </div>
+  <!-- ── MAIN ── -->
+  <main class="main">
 
-  <!-- Erreur -->
-  <div *ngIf="!loading && errorMessage" class="error-state">
-    <p>{{ errorMessage }}</p>
-    <button class="btn-back-text" routerLink="/dashboard">Retour au dashboard</button>
-  </div>
-
-  <!-- Split-screen : document + résultats -->
-  <div *ngIf="!loading && !errorMessage && clauses.length > 0" class="split">
-
-    <!-- GAUCHE : Document contractuel complet -->
-    <div class="panel panel-document">
-      <div class="panel-title">Document contractuel</div>
-      <div class="panel-body">
-        <div *ngFor="let clause of clauses" class="original-block">
-          <h4>{{ clause.titreClause }}</h4>
-          <p>{{ clause.texteOriginal }}</p>
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn-back" routerLink="/documents">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+        <div class="header-info">
+          <h1>Analyse du contrat</h1>
+          <p *ngIf="document">{{ document.nomFichier }}</p>
         </div>
       </div>
+      <!-- Bouton Export PDF -->
+      <button
+        *ngIf="!loading && !errorMessage && clauses.length > 0"
+        class="btn-export-pdf"
+        (click)="exportPDF()"
+        [disabled]="exporting"
+      >
+        <svg *ngIf="!exporting" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <div *ngIf="exporting" class="btn-spinner"></div>
+        {{ exporting ? 'Export en cours…' : 'Télécharger le rapport PDF' }}
+      </button>
+    </header>
+
+    <!-- Chargement -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Chargement des résultats…</p>
     </div>
 
-    <!-- DROITE : Cartes de résultats IA -->
-    <div class="panel panel-results">
-      <div class="panel-title">Résultats de l'analyse IA</div>
-      <div class="panel-body">
-        <div
-          *ngFor="let clause of clauses"
-          class="result-card"
-          [ngClass]="getCardClass(clause.niveauVigilance)"
-        >
-          <span class="card-badge" [ngClass]="getBadgeClass(clause.niveauVigilance)">
-            {{ getBadgeLabel(clause.niveauVigilance) }}
-          </span>
-          <h4 class="card-title">{{ clause.titreClause }}</h4>
-          <p class="card-text">{{ clause.texteClair }}</p>
-          <div *ngIf="clause.sourceJuridique" class="card-source">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-            </svg>
-            {{ clause.sourceJuridique }}
+    <!-- Erreur -->
+    <div *ngIf="!loading && errorMessage" class="error-state">
+      <p>{{ errorMessage }}</p>
+      <button class="btn-back-text" routerLink="/documents">Retour aux documents</button>
+    </div>
+
+    <!-- Split-screen : document + résultats -->
+    <div *ngIf="!loading && !errorMessage && clauses.length > 0" class="split">
+
+      <!-- GAUCHE : Document contractuel complet -->
+      <div class="panel panel-document">
+        <div class="panel-title">Document contractuel</div>
+        <div class="panel-body">
+          <div *ngFor="let clause of clauses" class="original-block">
+            <h4>{{ clause.titreClause }}</h4>
+            <p>{{ clause.texteOriginal }}</p>
           </div>
         </div>
       </div>
+
+      <!-- DROITE : Cartes de résultats IA -->
+      <div class="panel panel-results">
+        <div class="panel-title">Résultats de l'analyse IA</div>
+        <div class="panel-body">
+          <div
+            *ngFor="let clause of clauses"
+            class="result-card"
+            [ngClass]="getCardClass(clause.niveauVigilance)"
+          >
+            <span class="card-badge" [ngClass]="getBadgeClass(clause.niveauVigilance)">
+              {{ getBadgeLabel(clause.niveauVigilance) }}
+            </span>
+            <h4 class="card-title">{{ clause.titreClause }}</h4>
+            <p class="card-text">{{ clause.texteClair }}</p>
+            <div *ngIf="clause.sourceJuridique" class="card-source">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              {{ clause.sourceJuridique }}
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-  </div>
-
+  </main>
 </div>

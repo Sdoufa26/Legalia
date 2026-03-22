@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DocumentService, DocumentResponse, CarteResultatResponse } from '../../services/document.service';
+import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-analysis',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, SidebarComponent],
   templateUrl: './analysis.component.html',
   styleUrl: './analysis.component.css'
 })
