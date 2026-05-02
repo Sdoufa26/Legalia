@@ -35,6 +35,7 @@
   letter-spacing: 3px;
   color: #1a2e5a;
 }
+.logo-img { width: 36px; height: 36px; object-fit: contain; }
 
 /* ── TITRES ── */
 .title {

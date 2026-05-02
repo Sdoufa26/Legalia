@@ -24,6 +24,8 @@
   color: #1a2e5a;
   font-family: 'Helvetica Neue', sans-serif;
 }
+.logo-img { width: 32px; height: 32px; object-fit: contain; }
+.logo-img-footer { width: 22px; height: 22px; object-fit: contain; filter: brightness(10); }
 .nav-actions {
   display: flex;
   align-items: center;
