@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.time.LocalDateTime;
 
 /**
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 public class AuthService implements UserDetailsService {
 
     private final UtilisateurRepository utilisateurRepository;
+    private final ActionLogService actionLogService;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
@@ -40,7 +42,7 @@ public class AuthService implements UserDetailsService {
         return User.builder()
                 .username(utilisateur.getEmail())
                 .password(utilisateur.getMotDePasseHash())
-                .roles(utilisateur.getRole().name())  // ex: "CLIENT" → "ROLE_CLIENT"
+                .roles(utilisateur.getRole().name())
                 .build();
     }
 
@@ -59,9 +61,11 @@ public class AuthService implements UserDetailsService {
         utilisateur.setNom(request.getNom());
         utilisateur.setMotDePasseHash(passwordEncoder.encode(request.getPassword()));
         utilisateur.setDateInscription(LocalDateTime.now());
-        // Les valeurs par défaut (ACTIF, MENSUEL_STD, CLIENT) sont définies dans le modèle
+
 
         Utilisateur saved = utilisateurRepository.save(utilisateur);
+        actionLogService.log(saved.getEmail(), "REGISTER", "Nouveau compte créé");
+
         return toUserResponse(saved);
     }
 
@@ -78,6 +82,8 @@ public class AuthService implements UserDetailsService {
         }
 
         String token = jwtUtil.generateToken(utilisateur.getEmail());
+        actionLogService.log(utilisateur.getEmail(), "LOGIN", "Connexion réussie");
+
         return TokenResponse.builder()
                 .accessToken(token)
                 .tokenType("Bearer")
@@ -116,6 +122,7 @@ public class AuthService implements UserDetailsService {
         }
         utilisateur.setMotDePasseHash(passwordEncoder.encode(request.getNewPassword()));
         utilisateurRepository.save(utilisateur);
+        actionLogService.log(email, "CHANGE_PASSWORD", "Mot de passe modifié");
     }
 
     // Conversion entité → DTO (jamais de mot de passe dans la réponse)
