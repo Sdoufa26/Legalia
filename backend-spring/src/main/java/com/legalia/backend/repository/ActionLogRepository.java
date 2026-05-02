@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface ActionLogRepository extends JpaRepository<ActionLog, UUID> {
     List<ActionLog> findTop50ByOrderByCreatedAtDesc();
+    long countByEmailAndAction(String email, String action);
 }

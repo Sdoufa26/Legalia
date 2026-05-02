@@ -18,4 +18,8 @@ public class ActionLogService {
     public java.util.List<ActionLog> getRecentLogs() {
         return actionLogRepository.findTop50ByOrderByCreatedAtDesc();
     }
+
+    public long countFailedAttempts(String email) {
+        return actionLogRepository.countByEmailAndAction(email, "LOGIN_FAILED");
+    }
 }

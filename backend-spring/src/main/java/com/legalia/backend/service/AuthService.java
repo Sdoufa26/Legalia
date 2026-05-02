@@ -78,11 +78,18 @@ public class AuthService implements UserDetailsService {
 
         // Comparaison du mot de passe fourni avec le hash stocké
         if (!passwordEncoder.matches(request.getPassword(), utilisateur.getMotDePasseHash())) {
+            // Compte le nombre de tentatives échouées pour cet email
+            long tentatives = actionLogService.countFailedAttempts(request.getEmail());
+            actionLogService.log(
+                    request.getEmail(),
+                    "LOGIN_FAILED",
+                    "Connexion échouée — tentative " + (tentatives + 1)
+            );
             throw new IllegalArgumentException("Email ou mot de passe incorrect");
         }
 
-        String token = jwtUtil.generateToken(utilisateur.getEmail());
         actionLogService.log(utilisateur.getEmail(), "LOGIN", "Connexion réussie");
+        String token = jwtUtil.generateToken(utilisateur.getEmail());
 
         return TokenResponse.builder()
                 .accessToken(token)
