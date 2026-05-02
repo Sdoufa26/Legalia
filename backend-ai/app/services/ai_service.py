@@ -10,7 +10,7 @@ import time
 from collections.abc import Callable
 from google import genai
 from google.genai import types
-
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.config import get_settings
 from app.services import rag_service
 
@@ -308,7 +308,7 @@ def analyze_contract(
     on_clause_done: Callable | None = None,
 ) -> list[dict]:
     """
-    Analyse toutes les clauses d'un contrat avec fallback automatique de modèle.
+    Analyse toutes les clauses d'un contrat en parallèle (par lots) avec fallback automatique.
 
     Pour chaque clause :
     1. Recherche les articles de loi pertinents via le RAG.
@@ -316,45 +316,65 @@ def analyze_contract(
     3. En cas d'indisponibilité du modèle principal après 2 tentatives,
        bascule sur le modèle fallback pour toute la suite du document.
 
+    L'analyse est parallélisée par lots (batches) pour accélérer le traitement
+    tout en respectant les limites de taux (rate limits) de l'API Gemini.
+
     Args:
         clauses: Liste de dicts {"titre": str, "contenu": str}.
         on_clause_done: Callback optionnel appelé après chaque clause analysée,
                         utilisé pour le suivi de progression en temps réel.
 
     Returns:
-        Liste de résultats d'analyse structurés.
+        Liste de résultats d'analyse structurés, dans l'ordre d'origine.
     """
     global _modele_actif
 
     # Réinitialisation au modèle principal à chaque nouveau document
     _modele_actif = MODELE_PRINCIPAL
-    logger.info(f"Début d'analyse — modèle : {_modele_actif}")
+    logger.info(f"Début d'analyse parallèle — modèle : {_modele_actif}")
 
-    resultats = []
     total = len(clauses)
+    resultats = [None] * total  # Préserve l'ordre d'origine des clauses
+    BATCH_SIZE = 3              # Nombre de clauses analysées en parallèle
+    DELAI_ENTRE_BATCHES = 2     # Secondes de pause entre chaque lot
 
-    for i, clause in enumerate(clauses, start=1):
-        titre = clause.get("titre", f"Clause {i}")
-        contenu = clause.get("contenu", "")
+    def analyser_clause_indexee(index: int, clause: dict) -> tuple[int, dict]:
+            """Analyse une clause et retourne son index pour préserver l'ordre initial."""
 
-        logger.info(f"Analyse clause {i}/{total} : {titre[:60]}...")
+            # LIGNE CRUCIALE : On déclare la globale avant de l'utiliser
+            global _modele_actif
 
-        # Étape RAG : récupération des articles de loi pertinents
-        query_rag = f"{titre} {contenu[:200]}"
-        articles_pertinents = rag_service.search_relevant_chunks(query_rag, top_k=3)
+            titre = clause.get("titre", f"Clause {index + 1}")
+            contenu = clause.get("contenu", "")
 
-        # Étape IA : vulgarisation par Gemini avec gestion du fallback et des erreurs par clause
-        try:
-            resultat = analyze_clause(titre, contenu, articles_pertinents, _modele_actif)
-        except FallbackRequis:
-            # Bascule définitive sur le modèle fallback pour la suite du document
-            _modele_actif = MODELE_FALLBACK
-            logger.warning(f"Fallback sur {MODELE_FALLBACK} pour la suite du document")
+            logger.info(f"Analyse clause {index + 1}/{total} : {titre[:60]}...")
+
+            # Étape RAG : récupération des articles de loi pertinents
+            query_rag = f"{titre} {contenu[:200]}"
+            articles_pertinents = rag_service.search_relevant_chunks(query_rag, top_k=3)
+
+            # Étape IA : vulgarisation par Gemini avec gestion du fallback et des erreurs
             try:
                 resultat = analyze_clause(titre, contenu, articles_pertinents, _modele_actif)
+            except FallbackRequis:
+                # Bascule définitive sur le modèle fallback pour la suite du document
+                _modele_actif = MODELE_FALLBACK
+                logger.warning(f"Fallback sur {MODELE_FALLBACK} déclenché à la clause {index + 1}")
+                try:
+                    resultat = analyze_clause(titre, contenu, articles_pertinents, _modele_actif)
+                except RuntimeError as e:
+                    # Erreur même sur le fallback : clause ignorée, on continue
+                    logger.error(f"Clause {index + 1}/{total} ignorée après échec du fallback : {e}")
+                    resultat = {
+                        "titre_clause": titre,
+                        "texte_original": contenu,
+                        "texte_clair": "Cette clause n'a pas pu être analysée automatiquement.",
+                        "niveau_vigilance": "MOYEN",
+                        "source_juridique": "Non applicable",
+                    }
             except RuntimeError as e:
-                # Erreur même sur le fallback : clause ignorée, on continue
-                logger.error(f"Clause {i}/{total} ignorée après échec du fallback : {e}")
+                # Erreur Gemini inattendue : clause ignorée, analyse continue
+                logger.error(f"Clause {index + 1}/{total} ignorée suite à une erreur Gemini : {e}")
                 resultat = {
                     "titre_clause": titre,
                     "texte_original": contenu,
@@ -362,29 +382,47 @@ def analyze_contract(
                     "niveau_vigilance": "MOYEN",
                     "source_juridique": "Non applicable",
                 }
-        except RuntimeError as e:
-            # Erreur Gemini inattendue (ex: 500 interne) : clause ignorée, analyse continue
-            logger.error(f"Clause {i}/{total} ignorée suite à une erreur Gemini : {e}")
-            resultat = {
-                "titre_clause": titre,
-                "texte_original": contenu,
-                "texte_clair": "Cette clause n'a pas pu être analysée automatiquement.",
-                "niveau_vigilance": "MOYEN",
-                "source_juridique": "Non applicable",
+
+            return (index, resultat)
+
+    # Découpage des clauses en lots (batches)
+    batches = [
+        list(enumerate(clauses))[i:i + BATCH_SIZE]
+        for i in range(0, total, BATCH_SIZE)
+    ]
+
+    # Traitement parallèle par lots
+    for batch_num, batch in enumerate(batches, start=1):
+        logger.info(f"Batch {batch_num}/{len(batches)} — {len(batch)} clauses en parallèle")
+
+        with ThreadPoolExecutor(max_workers=BATCH_SIZE) as executor:
+            futures = {
+                executor.submit(analyser_clause_indexee, idx, clause): idx
+                for idx, clause in batch
             }
 
-        resultats.append(resultat)
+            # Récupération des résultats au fur et à mesure qu'ils se terminent
+            for future in as_completed(futures):
+                try:
+                    index, resultat = future.result()
+                    resultats[index] = resultat
 
-        # Notification de progression après chaque clause traitée
-        if on_clause_done is not None:
-            on_clause_done()
+                    # Notification de progression après chaque clause traitée
+                    if on_clause_done is not None:
+                        on_clause_done()
+                except Exception as e:
+                    logger.error(f"Erreur inattendue dans le batch {batch_num} : {e}")
 
-        # Pause entre les appels pour respecter le rate limit Gemini
-        if i < total:
-            time.sleep(2)
+        # Pause entre les lots pour respecter le rate limit Gemini
+        if batch_num < len(batches):
+            logger.info(f"Pause {DELAI_ENTRE_BATCHES}s entre les batches...")
+            time.sleep(DELAI_ENTRE_BATCHES)
+
+    # Filtrage de sécurité (au cas improbable où une exception non gérée laisserait un None)
+    resultats_finaux = [r for r in resultats if r is not None]
 
     logger.info(
-        f"Analyse complète : {len(resultats)}/{total} clauses traitées"
+        f"Analyse parallèle complète : {len(resultats_finaux)}/{total} clauses traitées"
         f" (modèle final : {_modele_actif})"
     )
-    return resultats
+    return resultats_finaux
