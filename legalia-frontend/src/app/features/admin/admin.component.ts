@@ -84,6 +84,7 @@ export class AdminComponent implements OnInit {
       case 'UPLOAD': return 'Upload';
       case 'CHANGE_PASSWORD': return 'Changement de mot de passe';
       case 'DELETE': return 'Suppression';
+      case 'LOGIN_FAILED': return 'Connexion échouée'
       default: return action;
     }
   }
@@ -95,6 +96,7 @@ export class AdminComponent implements OnInit {
       case 'UPLOAD': return 'badge-upload';
       case 'CHANGE_PASSWORD': return 'badge-password';
       case 'DELETE': return 'badge-delete';
+      case 'LOGIN_FAILED': return 'badge-failed'
       default: return '';
     }
   }
