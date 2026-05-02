@@ -83,6 +83,7 @@ export class AdminComponent implements OnInit {
       case 'REGISTER': return 'Inscription';
       case 'UPLOAD': return 'Upload';
       case 'CHANGE_PASSWORD': return 'Changement de mot de passe';
+      case 'DELETE': return 'Suppression';
       default: return action;
     }
   }
@@ -93,6 +94,7 @@ export class AdminComponent implements OnInit {
       case 'REGISTER': return 'badge-register';
       case 'UPLOAD': return 'badge-upload';
       case 'CHANGE_PASSWORD': return 'badge-password';
+      case 'DELETE': return 'badge-delete';
       default: return '';
     }
   }

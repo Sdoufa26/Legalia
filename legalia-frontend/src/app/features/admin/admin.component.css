@@ -85,5 +85,6 @@
 .badge-register { background: #e8f5e9; color: #2e7d32; }
 .badge-upload { background: #fff3e0; color: #e65100; }
 .badge-password { background: #fce4ec; color: #880e4f; }
+.badge-delete { background: #ffebee; color: #c62828; }
 
 .empty-state { padding: 32px; text-align: center; color: #aaa; font-size: 14px; }

@@ -40,6 +40,7 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final UtilisateurRepository utilisateurRepository;
     private final CarteResultatRepository carteResultatRepository;
+    private final ActionLogService actionLogService;
 
     /**
      * Upload d'un document PDF.
@@ -86,7 +87,14 @@ public class DocumentService {
                 .statut(Document.StatutDocument.EN_COURS)
                 .build();
 
-        return documentRepository.save(document);
+        Document saved = documentRepository.save(document);
+        // Logger l'upload de document
+        actionLogService.log(
+                email,
+                "UPLOAD",
+                "Document téléversé : " + file.getOriginalFilename()
+        );
+        return saved;
     }
 
     /**
@@ -139,6 +147,13 @@ public class DocumentService {
 
         // Supprime d'abord les cartes de résultat liées
         carteResultatRepository.deleteAll(carteResultatRepository.findByDocument(document));
+
+        // Logger la suppression des documents
+        actionLogService.log(
+                email,
+                "DELETE",
+                "Document supprimé : " + document.getNomFichier()
+        );
 
         // Supprime l'entrée en base
         documentRepository.delete(document);
