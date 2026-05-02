@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, guestGuard } from './core/auth/auth.guard';
+import { adminGuard } from "./core/auth/admin.guard";
 
 export const routes: Routes = [
   // ── Routes publiques ──
@@ -74,6 +75,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/reset-password/reset-password.component')
         .then(m => m.ResetPasswordComponent)
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./features/admin/admin.component').then(m => m.AdminComponent),
+    canActivate: [authGuard, adminGuard]
   },
   // ── Redirection par défaut ──
   {

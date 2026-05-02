@@ -1,0 +1,139 @@
+<div class="layout">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>Administration</h1>
+        <p>Gestion et supervision de la plateforme</p>
+      </div>
+      <div class="topbar-right">
+        <div class="user-menu-wrapper">
+          <button class="user-avatar" (click)="toggleUserMenu()">{{ initials }}</button>
+          <div class="user-dropdown" *ngIf="userMenuOpen">
+            <div class="user-info">
+              <strong>{{ fullName }}</strong>
+              <span>{{ user?.email }}</span>
+              <span class="badge-role">{{ user?.role }}</span>
+            </div>
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item" routerLink="/profile">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Mon profil
+            </button>
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item" (click)="logout()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Se déconnecter
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab" [class.active]="activeTab === 'stats'" (click)="setTab('stats')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Statistiques
+        </button>
+        <button class="tab" [class.active]="activeTab === 'users'" (click)="setTab('users')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Utilisateurs ({{ users.length }})
+        </button>
+        <button class="tab" [class.active]="activeTab === 'logs'" (click)="setTab('logs')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Journal d'activité
+        </button>
+      </div>
+
+      <!-- STATS -->
+      <div *ngIf="activeTab === 'stats'">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Utilisateurs total</span>
+              <span class="stat-icon blue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </span>
+            </div>
+            <div class="stat-value">{{ stats?.totalUsers ?? '—' }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Utilisateurs actifs</span>
+              <span class="stat-icon green">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </span>
+            </div>
+            <div class="stat-value">{{ stats?.activeUsers ?? '—' }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Actions enregistrées</span>
+              <span class="stat-icon orange">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+            </div>
+            <div class="stat-value">{{ stats?.totalActions ?? '—' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div *ngIf="activeTab === 'users'" class="table-card">
+        <table class="data-table">
+          <thead>
+          <tr>
+            <th>NOM</th>
+            <th>EMAIL</th>
+            <th>RÔLE</th>
+            <th>ABONNEMENT</th>
+            <th>STATUT</th>
+            <th>INSCRIPTION</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let u of users">
+            <td><strong>{{ u.prenom }} {{ u.nom }}</strong></td>
+            <td class="email-cell">{{ u.email }}</td>
+            <td><span class="badge" [ngClass]="getRoleClass(u.role)">{{ u.role }}</span></td>
+            <td>{{ u.typeOffre }}</td>
+            <td><span class="badge" [ngClass]="getStatusClass(u.statutAbonnement)">{{ u.statutAbonnement }}</span></td>
+            <td class="date-cell">{{ formatDate(u.dateInscription) }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- LOGS -->
+      <div *ngIf="activeTab === 'logs'" class="table-card">
+        <table class="data-table">
+          <thead>
+          <tr>
+            <th>DATE & HEURE</th>
+            <th>UTILISATEUR</th>
+            <th>ACTION</th>
+            <th>DÉTAILS</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let log of logs">
+            <td class="date-cell">{{ formatDateTime(log.createdAt) }}</td>
+            <td class="email-cell">{{ log.email }}</td>
+            <td><span class="badge" [ngClass]="getActionClass(log.action)">{{ getActionLabel(log.action) }}</span></td>
+            <td>{{ log.details }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="logs.length === 0" class="empty-state">Aucune action enregistrée.</div>
+      </div>
+
+    </div>
+  </main>
+</div>
