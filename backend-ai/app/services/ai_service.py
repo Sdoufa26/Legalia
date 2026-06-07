@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 # Modèles Gemini : principal et fallback
 MODELE_PRINCIPAL = "gemini-2.5-flash"
-MODELE_FALLBACK = "gemini-2.0-flash"
+MODELE_FALLBACK = "gemini-2.5-flash"
 
 # Client Gemini (instance unique)
 _client: genai.Client | None = None
@@ -335,7 +335,7 @@ def analyze_contract(
 
     total = len(clauses)
     resultats = [None] * total  # Préserve l'ordre d'origine des clauses
-    BATCH_SIZE = 3              # Nombre de clauses analysées en parallèle
+    BATCH_SIZE = 3             # Nombre de clauses analysées en parallèle
     DELAI_ENTRE_BATCHES = 2     # Secondes de pause entre chaque lot
 
     def analyser_clause_indexee(index: int, clause: dict) -> tuple[int, dict]:
@@ -372,7 +372,7 @@ def analyze_contract(
                         "niveau_vigilance": "MOYEN",
                         "source_juridique": "Non applicable",
                     }
-            except RuntimeError as e:
+            except Exception as e:
                 # Erreur Gemini inattendue : clause ignorée, analyse continue
                 logger.error(f"Clause {index + 1}/{total} ignorée suite à une erreur Gemini : {e}")
                 resultat = {
